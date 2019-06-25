@@ -212,12 +212,11 @@ class Actor(Shape):
         #texture = rl.LoadTexture((data_dir + 'texel.png').encode('utf-8'))
         #self.model.materials[0].maps[rl.MAP_DIFFUSE].texture = texture
         self.model.materials[0].shader = lightSystem.shader
+        self.bounding_box = self.calc_bounding_box()
 
     def calc_bounding_box(self):
-        if not self.loaded:
-            self.load_data()
-
-
+        if not hasattr(self, 'model'):
+            return ((0,0,0),(0,0,0))
         bb = rl.MeshBoundingBox(self.model.meshes[0])
 
         bb.min.x *= self.size.x
@@ -253,11 +252,11 @@ class Actor(Shape):
 
     def check_collision(self, other):
         if isinstance(other, Sphere):
-            return rl.CheckCollisionSpheres(self.pos, self.collision_radius, other.pos, other.radius)
+            return rl.CheckCollisionSpheres(self.calc_centre(), self.collision_radius, other.pos, other.radius)
         elif isinstance(other, Cube):
-            return rl.CheckCollisionBoxSphere(other.calc_bounding_box(), self.pos, self.collision_radius)
+            return rl.CheckCollisionBoxSphere(other.calc_bounding_box(), self.calc_centre(), self.collision_radius)
         elif isinstance(other, Actor):
-            return rl.CheckCollisionSpheres(self.pos, self.collision_radius, other.pos, other.radius)
+            return rl.CheckCollisionSpheres(self.pos, self.collision_radius, other.pos, other.collision_radius)
 
 
 
@@ -267,6 +266,7 @@ class Cube(Actor):
                  rotation_axis=Vector([0, 1, 0]), rotation_angle=0):
         super().__init__(model_file="", position=position, rotation_axis=rotation_axis, rotation_angle=rotation_angle,
                          size=size, color=color, wires=wires, wire_color=wire_color)
+        self.loaded=False
 
     def load_data(self):
         self.loaded = True
@@ -285,7 +285,7 @@ class Cube(Actor):
             return rl.CheckCollisionBoxes(self.calc_bounding_box(), other.calc_bounding_box())
         elif isinstance(other, Actor):
             return rl.CheckCollisionBoxSphere(
-                self.calc_bounding_box(), other.pos, other.collision_radius
+                self.calc_bounding_box(), other.calc_centre(), other.collision_radius
             )
 
 
