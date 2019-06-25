@@ -5,8 +5,13 @@ __version__ = '0.1'
 from raylib.static import ffi, rl
 #from ..dynamic import ffi, raylib as rl
 from raylib.colors import *
+from .util import *
 
 import sys
+from .rlights import *
+
+
+
 
 data_dir = ""
 
@@ -24,80 +29,6 @@ camera.type = rl.CAMERA_PERSPECTIVE
 
 mod = sys.modules['__main__']
 
-
-class Vector(list):
-    @property
-    def x(self):
-        return self[0]
-
-    @x.setter
-    def x(self, value):
-        self[0] = value
-
-    @property
-    def y(self):
-        return self[1]
-
-    @y.setter
-    def y(self, value):
-        self[1] = value
-
-    @property
-    def z(self):
-        return self[2]
-
-    @z.setter
-    def z(self, value):
-        self[2] = value
-
-    @property
-    def w(self):
-        return self[3]
-
-    @w.setter
-    def w(self, value):
-        self[3] = value
-
-class Color(list):
-    def __init__(self, s):
-        if isinstance(s, str):
-            super().__init__(globals()[s.upper()])
-        else:
-            super().__init__(s)
-        if len(self) == 3:
-            self.append(255)
-
-    @property
-    def r(self):
-        return self[0]
-
-    @r.setter
-    def r(self, value):
-        self[0] = value
-
-    @property
-    def g(self):
-        return self[1]
-
-    @g.setter
-    def g(self, value):
-        self[1] = value
-
-    @property
-    def b(self):
-        return self[2]
-
-    @b.setter
-    def b(self, value):
-        self[2] = value
-
-    @property
-    def a(self):
-        return self[3]
-
-    @a.setter
-    def a(self, value):
-        self[3] = value
 
 
 def clear(color=RAYWHITE):
@@ -154,92 +85,101 @@ class Shape:
         self.pos.z = value
 
 
-class Box(Shape):
-    def __init__(self, position, size, color=RED, wires=True, wire_color=DARKGRAY):
-        self.pos = position
-        self.size = size
-        self.color = color
-        self.wire_color = wire_color
-        self.wires = wires
+# class Box(Shape):
+#     def __init__(self, position, size, color=RED, wires=True, wire_color=DARKGRAY):
+#         self.pos = position
+#         self.size = size
+#         self.color = color
+#         self.wire_color = wire_color
+#         self.wires = wires
+#
+#     # def __getattr__(self, item):
+#     #     return self.pos.item
+#     #
+#     # def __setattr__(self, key, value):
+#     #     self.pos.key = value
+#
+#     @property
+#     def size(self):
+#         return self._size
+#
+#     @size.setter
+#     def size(self, value):
+#         print("setting size ", value, type(value))
+#         self._size = Vector(value)
+#
+#     def get_bounding_box(self):
+#         return (
+#             (
+#                 self.pos.x - self.size.x / 2,
+#                 self.pos.y - self.size.y / 2,
+#                 self.pos.z - self.size.z / 2,
+#             ),
+#             (
+#                 self.pos.x + self.size.x / 2,
+#                 self.pos.y + self.size.y / 2,
+#                 self.pos.z + self.size.z / 2,
+#             )
+#         )
+#
+#     def draw(self):
+#         #print("draw color ",self.color)
+#         rl.DrawCubeV(self.pos, self.size, self.color)
+#         if self.wires:
+#             rl.DrawCubeWiresV(
+#                 self.pos, self.size, self.wire_color
+#             )
+#
+#     def check_collision(self, other):
+#         if isinstance(other, Sphere):
+#             r = rl.CheckCollisionBoxSphere(
+#                 self.get_bounding_box(), other.pos, other.radius
+#             )
+#             return r
+#         elif isinstance(other, Box):
+#             return rl.CheckCollisionBoxes(self.get_bounding_box(), other.get_bounding_box())
+#         elif isinstance(other, Actor):
+#             return self.check_collision(other.collision_sphere)
 
-    # def __getattr__(self, item):
-    #     return self.pos.item
-    #
-    # def __setattr__(self, key, value):
-    #     self.pos.key = value
 
+# class Sphere(Shape):
+#     def __init__(self, position, radius, color=RED, wires=True, wire_color=DARKGRAY):
+#         self.pos = position
+#         self.radius = radius
+#         self.color = color
+#         self.wire_color = wire_color
+#         self.wires = wires
+#
+#     def draw(self):
+#         rl.DrawSphere(self.pos, self.radius, self.color)
+#         if self.wires:
+#             rl.DrawSphereWires(self.pos, self.radius, 32, 32, self.wire_color)
+#
+#     def check_collision(self, other):
+#         if isinstance(other, Sphere):
+#             return rl.CheckCollisionSpheres(
+#                 self.pos, self.radius, other.pos, other.radius
+#             )
+#         elif isinstance(other, Box):
+#             return rl.CheckCollisionBoxSphere(
+#                 other.get_bounding_box(), self.pos, self.radius
+#             )
+#         elif isinstance(other, Actor):
+#             return self.check_collision(other.collision_sphere)
+
+
+class Actor(Shape):
     @property
     def size(self):
         return self._size
 
     @size.setter
     def size(self, value):
-        print("setting size ", value, type(value))
         self._size = Vector(value)
 
-    def get_bounding_box(self):
-        return (
-            (
-                self.pos.x - self.size.x / 2,
-                self.pos.y - self.size.y / 2,
-                self.pos.z - self.size.z / 2,
-            ),
-            (
-                self.pos.x + self.size.x / 2,
-                self.pos.y + self.size.y / 2,
-                self.pos.z + self.size.z / 2,
-            )
-        )
 
-    def draw(self):
-        #print("draw color ",self.color)
-        rl.DrawCubeV(self.pos, self.size, self.color)
-        if self.wires:
-            rl.DrawCubeWiresV(
-                self.pos, self.size, self.wire_color
-            )
-
-    def check_collision(self, other):
-        if isinstance(other, Sphere):
-            r = rl.CheckCollisionBoxSphere(
-                self.get_bounding_box(), other.pos, other.radius
-            )
-            return r
-        elif isinstance(other, Box):
-            return rl.CheckCollisionBoxes(self.get_bounding_box(), other.get_bounding_box())
-        elif isinstance(other, Actor):
-            return self.check_collision(other.collision_sphere)
-
-
-class Sphere(Shape):
-    def __init__(self, position, radius, color=RED, wires=True, wire_color=DARKGRAY):
-        self.pos = position
-        self.radius = radius
-        self.color = color
-        self.wire_color = wire_color
-        self.wires = wires
-
-    def draw(self):
-        rl.DrawSphere(self.pos, self.radius, self.color)
-        if self.wires:
-            rl.DrawSphereWires(self.pos, self.radius, 32, 32, self.wire_color)
-
-    def check_collision(self, other):
-        if isinstance(other, Sphere):
-            return rl.CheckCollisionSpheres(
-                self.pos, self.radius, other.pos, other.radius
-            )
-        elif isinstance(other, Box):
-            return rl.CheckCollisionBoxSphere(
-                other.get_bounding_box(), self.pos, self.radius
-            )
-        elif isinstance(other, Actor):
-            return self.check_collision(other.collision_sphere)
-
-
-class Actor(Shape):
-    def __init__(self, model_file, position=Vector([0, 0, 0]), collision_radius=1, texture_file="",
-                 rotation_axis=Vector([0, 1, 0]), rotation_angle=0, scale=Vector([1, 1, 1]), color=WHITE, wires=False,
+    def __init__(self, model_file, position=Vector([0, 0, 0]), collision_radius=0, texture_file="",
+                 rotation_axis=Vector([0, 1, 0]), rotation_angle=0, size=Vector([1, 1, 1]), color=WHITE, wires=False,
                  wire_color=DARKGRAY):
         #super().__init__(position, collision_radius, color, wires, wire_color)
 
@@ -252,30 +192,40 @@ class Actor(Shape):
         if texture_file == "":
             texture_file = model_file + "_diffuse"
         self.texture_file = texture_file
-        self.scale = scale
+        self.size = size
         self.rotation_axis = rotation_axis
         self.rotation_angle = rotation_angle
         self.collision_radius = collision_radius
-        self.collision_sphere = Sphere(position, collision_radius, RED)
-
         self.loaded = False
 
     def load_data(self):
         self.loaded = True
         print("*** DATA_DIR=", data_dir)
         self.model = rl.LoadModel((data_dir + self.model_file + '.obj').encode('utf-8'))
+        mat = rl.LoadMaterialDefault()
+        self.model.materials[0]=mat
+
         texture = rl.LoadTexture((data_dir + self.texture_file + '.png').encode('utf-8'))
-        self.model.materials[0].maps[rl.MAP_DIFFUSE].texture = texture
+        if texture.format:
+            self.model.materials[0].maps[rl.MAP_DIFFUSE].texture = texture
+
+        #texture = rl.LoadTexture((data_dir + 'texel.png').encode('utf-8'))
+        #self.model.materials[0].maps[rl.MAP_DIFFUSE].texture = texture
+        self.model.materials[0].shader = lightSystem.shader
 
     def calc_bounding_box(self):
+        if not self.loaded:
+            self.load_data()
+
+
         bb = rl.MeshBoundingBox(self.model.meshes[0])
 
-        bb.min.x *= self.scale.x
-        bb.min.y *= self.scale.y
-        bb.min.z *= self.scale.z
-        bb.max.x *= self.scale.x
-        bb.max.y *= self.scale.y
-        bb.max.z *= self.scale.z
+        bb.min.x *= self.size.x
+        bb.min.y *= self.size.y
+        bb.min.z *= self.size.z
+        bb.max.x *= self.size.x
+        bb.max.y *= self.size.y
+        bb.max.z *= self.size.z
 
         bb.min.x += self.pos.x
         bb.min.y += self.pos.y
@@ -285,27 +235,80 @@ class Actor(Shape):
         bb.max.z += self.pos.z
         return bb
 
-    def calc_collision_sphere(self):
+    def calc_centre(self):
         centre_x = (self.bounding_box.max.x + self.bounding_box.min.x)/2
         centre_y = (self.bounding_box.max.y + self.bounding_box.min.y)/2
         centre_z = (self.bounding_box.max.z + self.bounding_box.min.z)/2
-        sphere = Sphere((centre_x, centre_y, centre_z), self.collision_radius, RED)
-        return sphere
+        return (centre_x, centre_y, centre_z)
+
 
     def draw(self):
         if not self.loaded:
             self.load_data()
         self.bounding_box = self.calc_bounding_box()
-        self.collision_sphere = self.calc_collision_sphere()
-        rl.DrawModelEx(self.model, self.pos, self.rotation_axis, self.rotation_angle, self.scale, self.color)
+        rl.DrawModelEx(self.model, self.pos, self.rotation_axis, self.rotation_angle, self.size, self.color)
         if self.wires:
             rl.DrawBoundingBox(self.bounding_box, self.wire_color)
-            self.collision_sphere.draw()
+            rl.DrawSphere(self.calc_centre(), self.collision_radius, RED)
 
     def check_collision(self, other):
-        return self.collision_sphere.check_collision(other)
+        if isinstance(other, Sphere):
+            return rl.CheckCollisionSpheres(self.pos, self.collision_radius, other.pos, other.radius)
+        elif isinstance(other, Cube):
+            return rl.CheckCollisionBoxSphere(other.calc_bounding_box(), self.pos, self.collision_radius)
+        elif isinstance(other, Actor):
+            return rl.CheckCollisionSpheres(self.pos, self.collision_radius, other.pos, other.radius)
+
+
+
+class Cube(Actor):
+    def __init__(self, position=Vector([0, 0, 0]), size=Vector([10, 10, 10]), color=WHITE, wires=False,
+                 wire_color=DARKGRAY,
+                 rotation_axis=Vector([0, 1, 0]), rotation_angle=0):
+        super().__init__(model_file="", position=position, rotation_axis=rotation_axis, rotation_angle=rotation_angle,
+                         size=size, color=color, wires=wires, wire_color=wire_color)
+
+    def load_data(self):
+        self.loaded = True
+        self.model = rl.LoadModelFromMesh(rl.GenMeshCube(1, 1, 1))
+        mat = rl.LoadMaterialDefault()
+        self.model.materials[0]=mat
+        self.model.materials[0].shader = lightSystem.shader
+
+
+    def check_collision(self, other):
+        if isinstance(other, Sphere):
+            return rl.CheckCollisionBoxSphere(
+                self.calc_bounding_box(), other.pos, other.radius
+            )
+        elif isinstance(other, Cube):
+            return rl.CheckCollisionBoxes(self.calc_bounding_box(), other.calc_bounding_box())
+        elif isinstance(other, Actor):
+            return rl.CheckCollisionBoxSphere(
+                self.calc_bounding_box(), other.pos, other.collision_radius
+            )
+
+
+class Sphere(Actor):
+    def __init__(self, position, radius, color=RED, wires=False, wire_color=DARKGRAY):
+        super().__init__(model_file="", position=position,  color=color, wires=wires, wire_color=wire_color, collision_radius=radius)
+        self.radius = radius
+
+
+    def load_data(self):
+        self.loaded = True
+        self.model = rl.LoadModelFromMesh(rl.GenMeshSphere(self.radius, 32, 32))
+        mat = rl.LoadMaterialDefault()
+        self.model.materials[0] = mat
+        self.model.materials[0].shader = lightSystem.shader
+
+
+
+def getLightSystem():
+    return lightSystem
 
 def run():
+    global lightSystem, foo
     screen_width = 800
     screen_height = 640
     title = "RichLib"
@@ -327,6 +330,17 @@ def run():
 
     rl.InitWindow(screen_width, screen_height, title.encode('utf-8'))
 
+    lights0 = Light(LIGHT_POINT,  [ 50, 50, 50 ], Vector([0,0,0]), WHITE)
+    # lights1 = Light(LIGHT_POINT, [4, 2, 4 ],  Vector([0,0,0]), RED)
+    # lights2 = Light(LIGHT_POINT, [ 0, 4, 2 ],  Vector([0,0,0]), GREEN)
+    # lights3 = Light(LIGHT_POINT, [ 0, 4, 2 ],  Vector([0,0,0]), BLUE)
+
+
+
+    lightSystem = LightSystem([ 0.2, 0.2, 0.2, 1.0 ], lights0) #, lights1, lights2, lights3)
+
+
+
     rl.SetTargetFPS(60)
 
     if hasattr(mod, "CAMERA"):
@@ -339,6 +353,7 @@ def run():
         if hasattr(mod, "update"):
             mod.update()
         rl.UpdateCamera(camera)
+        lightSystem.update(camera.position)
         if rl.IsKeyPressed(rl.KEY_F):
             rl.ToggleFullscreen()
         if rl.IsKeyPressed(rl.KEY_ESCAPE):
@@ -352,6 +367,7 @@ def run():
              mod.draw()
         if hasattr(mod, "draw3d"):
             mod.draw3d()
+            lightSystem.draw()
         rl.EndMode3D()
         if hasattr(mod, "draw2d"):
             mod.draw2d()
