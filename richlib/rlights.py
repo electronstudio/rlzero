@@ -5,20 +5,20 @@ import pathlib
 PATH = pathlib.Path(__file__).parent
 screen = PyRay()
 
+LIGHT_DIRECTIONAL=0
+LIGHT_POINT=1
 
 class LightSystem:
     MAX_LIGHTS = 4         #// Max dynamic lights supported by shader
-    lightsCount = 0
-    lights = []
 
     def __init__(self, ambient = [ 0.2, 0.2, 0.2, 1.0 ], *ls):
+        self.lights = []
+        self.lightsCount = 0
         self.shader = screen.load_shader(str(PATH / "basic_lighting.vs"), str(PATH / "basic_lighting.fs"))
 
-        #// Get some shader loactions
         self.shader.locs[LOC_MATRIX_MODEL] = GetShaderLocation(self.shader, b"matModel");
         self.shader.locs[LOC_VECTOR_VIEW] = GetShaderLocation(self.shader, b"viewPos");
 
-        #// ambient light level
         self.ambientLoc = GetShaderLocation(self.shader, b"ambient");
         v = ffi.new("struct Vector4 *", ambient)
         SetShaderValue(self.shader, self.ambientLoc, v, UNIFORM_VEC4);
@@ -43,12 +43,6 @@ class LightSystem:
                 DrawSphereEx(light.pos, 0.2, 8, 8, light.color)
 
 
-
-
-LIGHT_DIRECTIONAL=0
-LIGHT_POINT=1
-
-
 class Light:
     @property
     def pos(self):
@@ -58,21 +52,26 @@ class Light:
     def pos(self, value):
         self._pos = Vector(value)
 
-    def __init__(self, type,  position,  target, color):
+    @property
+    def target(self):
+        return self._target
+
+    @target.setter
+    def target(self, value):
+        self._target = Vector(value)
+
+    def __init__(self,  position,  target, color=WHITE, type=LIGHT_POINT):
         self.enabled = True
         self.type = type
-        self.pos = position #ffi.new("struct Vector3 *",position)
+        self.pos = position
         self.target = target
         self.color = color
 
 
 
-
     def configure(self, id, shader):
         self.shader = shader
-        #// TODO: Below code doesn't look good to me,
-        #                        // it assumes a specific shader naming and structure
-        #                                                       // Probably this implementation could be improved
+
         self.enabledName = f"lights[{id}].enabled"
         self.typeName = f"lights[{id}].type"
         self.posName = f"lights[{id}].position"
@@ -88,15 +87,12 @@ class Light:
         self.UpdateLightValues()
 
 
-    #// Send light properties to shader
-    #// NOTE: Light shader locations should be available
+
     def UpdateLightValues(self):
-        #// Send to shader light enabled state and type
         SetShaderValue(self.shader, self.enabledLoc, ffi.new("int *",self.enabled), UNIFORM_INT)
         SetShaderValue(self.shader, self.typeLoc, ffi.new("int *",self.type), UNIFORM_INT)
 
         #// Send to shader light position values
-        #position = [ self.position.x, self.position.y, self.position.z]
         SetShaderValue(self.shader, self.posLoc, ffi.new("struct Vector3 *",self.pos), UNIFORM_VEC3)
 
         #// Send to shader light target position values

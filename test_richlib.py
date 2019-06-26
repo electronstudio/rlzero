@@ -25,7 +25,7 @@ bob.x=50
 def init():
     global lights0
     lightSystem = getLightSystem()
-    lights0 = Light(LIGHT_POINT,  [ 30, 30, 30 ], Vector([0,0,0]), WHITE)
+    lights0 = Light([ 30, 30, 30 ], Vector([0,0,0]))
     lightSystem.add(lights0)
 
 

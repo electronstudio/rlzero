@@ -3,15 +3,12 @@
 __version__ = '0.1'
 
 from raylib.static import ffi, rl
-#from ..dynamic import ffi, raylib as rl
+# from ..dynamic import ffi, raylib as rl
 from raylib.colors import *
 from .util import *
 
 import sys
 from .rlights import *
-
-
-
 
 data_dir = ""
 
@@ -28,7 +25,6 @@ camera.fovy = 45
 camera.type = rl.CAMERA_PERSPECTIVE
 
 mod = sys.modules['__main__']
-
 
 
 def clear(color=RAYWHITE):
@@ -58,7 +54,7 @@ class Shape:
 
     @wire_color.setter
     def wire_color(self, value):
-        self._wire_color =  Color(value)
+        self._wire_color = Color(value)
 
     @property
     def x(self):
@@ -177,11 +173,10 @@ class Actor(Shape):
     def size(self, value):
         self._size = Vector(value)
 
-
-    def __init__(self, model_file, position=Vector([0, 0, 0]), collision_radius=0, texture_file="",
-                 rotation_axis=Vector([0, 1, 0]), rotation_angle=0, size=Vector([1, 1, 1]), color=WHITE, wires=False,
+    def __init__(self, model_file, position=(0, 0, 0), collision_radius=0, texture_file="",
+                 rotation_axis=Vector([0, 1, 0]), rotation_angle=0, size=(1, 1, 1), color=WHITE, wires=False,
                  wire_color=DARKGRAY):
-        #super().__init__(position, collision_radius, color, wires, wire_color)
+        # super().__init__(position, collision_radius, color, wires, wire_color)
 
         self.pos = position
         self.color = color
@@ -203,20 +198,20 @@ class Actor(Shape):
         print("*** DATA_DIR=", data_dir)
         self.model = rl.LoadModel((data_dir + self.model_file + '.obj').encode('utf-8'))
         mat = rl.LoadMaterialDefault()
-        self.model.materials[0]=mat
+        self.model.materials[0] = mat
 
         texture = rl.LoadTexture((data_dir + self.texture_file + '.png').encode('utf-8'))
         if texture.format:
             self.model.materials[0].maps[rl.MAP_DIFFUSE].texture = texture
 
-        #texture = rl.LoadTexture((data_dir + 'texel.png').encode('utf-8'))
-        #self.model.materials[0].maps[rl.MAP_DIFFUSE].texture = texture
+        # texture = rl.LoadTexture((data_dir + 'texel.png').encode('utf-8'))
+        # self.model.materials[0].maps[rl.MAP_DIFFUSE].texture = texture
         self.model.materials[0].shader = lightSystem.shader
         self.bounding_box = self.calc_bounding_box()
 
     def calc_bounding_box(self):
         if not hasattr(self, 'model'):
-            return ((0,0,0),(0,0,0))
+            return ((0, 0, 0), (0, 0, 0))
         bb = rl.MeshBoundingBox(self.model.meshes[0])
 
         bb.min.x *= self.size.x
@@ -235,11 +230,10 @@ class Actor(Shape):
         return bb
 
     def calc_centre(self):
-        centre_x = (self.bounding_box.max.x + self.bounding_box.min.x)/2
-        centre_y = (self.bounding_box.max.y + self.bounding_box.min.y)/2
-        centre_z = (self.bounding_box.max.z + self.bounding_box.min.z)/2
+        centre_x = (self.bounding_box.max.x + self.bounding_box.min.x) / 2
+        centre_y = (self.bounding_box.max.y + self.bounding_box.min.y) / 2
+        centre_z = (self.bounding_box.max.z + self.bounding_box.min.z) / 2
         return (centre_x, centre_y, centre_z)
-
 
     def draw(self):
         if not self.loaded:
@@ -259,22 +253,20 @@ class Actor(Shape):
             return rl.CheckCollisionSpheres(self.pos, self.collision_radius, other.pos, other.collision_radius)
 
 
-
 class Cube(Actor):
-    def __init__(self, position=Vector([0, 0, 0]), size=Vector([10, 10, 10]), color=WHITE, wires=False,
+    def __init__(self, position=(0, 0, 0), size=(10, 10, 10), color=WHITE, wires=False,
                  wire_color=DARKGRAY,
                  rotation_axis=Vector([0, 1, 0]), rotation_angle=0):
         super().__init__(model_file="", position=position, rotation_axis=rotation_axis, rotation_angle=rotation_angle,
                          size=size, color=color, wires=wires, wire_color=wire_color)
-        self.loaded=False
+        self.loaded = False
 
     def load_data(self):
         self.loaded = True
         self.model = rl.LoadModelFromMesh(rl.GenMeshCube(1, 1, 1))
         mat = rl.LoadMaterialDefault()
-        self.model.materials[0]=mat
+        self.model.materials[0] = mat
         self.model.materials[0].shader = lightSystem.shader
-
 
     def check_collision(self, other):
         if isinstance(other, Sphere):
@@ -291,9 +283,9 @@ class Cube(Actor):
 
 class Sphere(Actor):
     def __init__(self, position, radius, color=RED, wires=False, wire_color=DARKGRAY):
-        super().__init__(model_file="", position=position,  color=color, wires=wires, wire_color=wire_color, collision_radius=radius)
+        super().__init__(model_file="", position=position, color=color, wires=wires, wire_color=wire_color,
+                         collision_radius=radius)
         self.radius = radius
-
 
     def load_data(self):
         self.loaded = True
@@ -303,9 +295,9 @@ class Sphere(Actor):
         self.model.materials[0].shader = lightSystem.shader
 
 
-
 def getLightSystem():
     return lightSystem
+
 
 def run():
     global lightSystem, foo
@@ -330,16 +322,12 @@ def run():
 
     rl.InitWindow(screen_width, screen_height, title.encode('utf-8'))
 
-    lights0 = Light(LIGHT_POINT,  [ 50, 50, 50 ], Vector([0,0,0]), WHITE)
+    lights0 = Light([50, 50, 50], Vector([0, 0, 0]), WHITE)
     # lights1 = Light(LIGHT_POINT, [4, 2, 4 ],  Vector([0,0,0]), RED)
     # lights2 = Light(LIGHT_POINT, [ 0, 4, 2 ],  Vector([0,0,0]), GREEN)
     # lights3 = Light(LIGHT_POINT, [ 0, 4, 2 ],  Vector([0,0,0]), BLUE)
 
-
-
-    lightSystem = LightSystem([ 0.2, 0.2, 0.2, 1.0 ], lights0) #, lights1, lights2, lights3)
-
-
+    lightSystem = LightSystem([0.2, 0.2, 0.2, 1.0], lights0)  # , lights1, lights2, lights3)
 
     rl.SetTargetFPS(60)
 
@@ -364,7 +352,7 @@ def run():
         rl.BeginMode3D(camera[0])
         pyray.draw_grid(100, 10)
         if hasattr(mod, "draw"):
-             mod.draw()
+            mod.draw()
         if hasattr(mod, "draw3d"):
             mod.draw3d()
             lightSystem.draw()
