@@ -8,6 +8,7 @@ from raylib.colors import *
 from .util import *
 
 import sys
+import os
 from .rlights import *
 
 data_dir = ""
@@ -196,16 +197,26 @@ class Actor(Shape):
     def load_data(self):
         self.loaded = True
         print("*** DATA_DIR=", data_dir)
-        self.model = rl.LoadModel((data_dir + self.model_file + '.obj').encode('utf-8'))
+        file = data_dir + self.model_file + '.obj'
+        if not os.path.isfile(file):
+            file = str(PATH / 'models' / self.model_file) + '.obj'
+        if not os.path.isfile(file):
+            raise Exception(f"file {self.model_file} does not exist")
+
+
+        self.model = rl.LoadModel(file.encode('utf-8'))
         mat = rl.LoadMaterialDefault()
         self.model.materials[0] = mat
 
-        texture = rl.LoadTexture((data_dir + self.texture_file + '.png').encode('utf-8'))
+        tfile = data_dir + self.texture_file + '.png'
+        if not os.path.isfile(tfile):
+            tfile = str(PATH / 'models' / self.texture_file) + '.png'
+
+        texture = rl.LoadTexture(tfile.encode('utf-8'))
         if texture.format:
             self.model.materials[0].maps[rl.MAP_DIFFUSE].texture = texture
 
-        # texture = rl.LoadTexture((data_dir + 'texel.png').encode('utf-8'))
-        # self.model.materials[0].maps[rl.MAP_DIFFUSE].texture = texture
+
         self.model.materials[0].shader = lightSystem.shader
         self.bounding_box = self.calc_bounding_box()
 
