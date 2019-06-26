@@ -1,16 +1,13 @@
 """
-Some game controllers have different inputs and some are not be compatible so don'tbe surprised if this doesnt quite work properly!  Use joystick_tester.py to test yours.
+Raylib has a game controller API that is a bit different from Pygame's
+TODO for Richard: Might simplify this a bit more
 """
 from richlib import *
 
-import pygame
-
-joystick = pygame.joystick.Joystick(0)
-joystick.init()
-
 alien = Actor('trooper')
-alien.size = (20,20,20)
+alien.size = (20, 20, 20)
 alien.pos = (0, 10, 10)
+
 
 def draw():
     clear()
@@ -18,23 +15,20 @@ def draw():
 
 
 def update():
-    print(joystick.get_axis(0))
-    # if pyray.is_gamepad_available(0):
-    #     print(pyray.is_gamepad_button_down(0,0))
-    #     cd = pyray.get_gamepad_name(0)
-        #print(ffi.string(cd))
+    if pyray.is_gamepad_available(0):
+        if pyray.is_gamepad_button_down(0, rl.GAMEPAD_BUTTON_LEFT_FACE_UP):
+            print("up")
+        if pyray.is_gamepad_button_down(0, rl.GAMEPAD_BUTTON_RIGHT_FACE_UP):
+            print("Y")
+        if pyray.get_gamepad_axis_movement(0, rl.GAMEPAD_AXIS_LEFT_X) > 0.3:
+            alien.x = alien.x + 1
+        elif pyray.get_gamepad_axis_movement(0, rl.GAMEPAD_AXIS_LEFT_X) < -0.3:
+            alien.x = alien.x - 1
 
-   # print(pyray.get_gamepad_axis_movement(0, 0))
-    if (keyboard.right):
-        alien.x = alien.x + 1
-    elif (keyboard.left):
-        alien.x = alien.x - 1
+
 
 run()
 
-
-
-
 """TODO
-    make the alien move up and down as well as left and right
+    make the alien move up/down and forward/back as well as left/right
 """
