@@ -4,17 +4,17 @@
 """
 from richlib import *
 
-box = Box((0, 10, 0), (10, 20, 10), 'red')
+cube = Cube((0, 10, 0), (10, 20, 10), 'blue')
 
 def draw():
     clear()
-    box.draw()
+    cube.draw()
 
 
 def update():
-    box.x = box.x + 1
-    if box.x > 100:
-        box.x = -100
+    cube.x = cube.x + 1
+    if cube.x > 100:
+        cube.x = -100
 
 run()
 

@@ -293,7 +293,7 @@ class Cube(Actor):
 
 
 class Sphere(Actor):
-    def __init__(self, position, radius, color=RED, wires=False, wire_color=DARKGRAY):
+    def __init__(self, position=(0,0,0), radius=10, color=RED, wires=False, wire_color=DARKGRAY):
         super().__init__(model_file="", position=position, color=color, wires=wires, wire_color=wire_color,
                          collision_radius=radius)
         self.radius = radius
@@ -333,12 +333,12 @@ def run():
 
     rl.InitWindow(screen_width, screen_height, title.encode('utf-8'))
 
-    lights0 = Light([50, 50, 50], Vector([0, 0, 0]), WHITE)
+    lights0 = Light([50, 50, 50], Vector([0, 0, 0]), (150,150,150,255))
     # lights1 = Light(LIGHT_POINT, [4, 2, 4 ],  Vector([0,0,0]), RED)
     # lights2 = Light(LIGHT_POINT, [ 0, 4, 2 ],  Vector([0,0,0]), GREEN)
     # lights3 = Light(LIGHT_POINT, [ 0, 4, 2 ],  Vector([0,0,0]), BLUE)
 
-    lightSystem = LightSystem([0.2, 0.2, 0.2, 1.0], lights0)  # , lights1, lights2, lights3)
+    lightSystem = LightSystem([0.2, 0.2, 0.0, 1.0], lights0)  # , lights1, lights2, lights3)
 
     rl.SetTargetFPS(60)
 
