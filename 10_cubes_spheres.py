@@ -1,11 +1,10 @@
 """
-IMPORTANT: switch Mu mode to "Pygame Zero" or
-nothing will appear!
+IMPORTANT: switch Mu mode to "Python 3"
 """
 from richlib import *
 
-WIDTH = 500  # What are these units? What if we change them?
-HEIGHT = 500  # What if we delete this line?
+WIDTH = 500
+HEIGHT = 500
 
 cube1 = Cube((25, 0, 0))
 cube2 = Cube((-25, 0, 0))

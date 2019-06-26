@@ -1,0 +1,2 @@
+include richlib/*
+include richlib/models/*
