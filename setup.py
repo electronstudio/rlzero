@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="richlib",
-    version="0.0.3",
+    version="0.0.5",
     description="Pygame Zero like API to teach 3d games programming based on Raylib",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -27,5 +27,5 @@ setup(
     ],
     packages=["richlib"],
     include_package_data=True,
-    install_requires=["raylib"]
+    install_requires=["raylib>=2.5.0.post4", "cffi>=1.12.3"]
 )
