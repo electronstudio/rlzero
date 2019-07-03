@@ -1,6 +1,5 @@
 """
-Raylib has a game controller API that is a bit different from Pygame's
-TODO for Richard: Might simplify this a bit more
+Richlib has a gamepad API that is a bit different from Pygame's
 """
 from richlib import *
 
@@ -15,16 +14,14 @@ def draw():
 
 
 def update():
-    if pyray.is_gamepad_available(0):
-        if pyray.is_gamepad_button_down(0, rl.GAMEPAD_BUTTON_LEFT_FACE_UP):
-            print("up")
-        if pyray.is_gamepad_button_down(0, rl.GAMEPAD_BUTTON_RIGHT_FACE_UP):
-            print("Y")
-        if pyray.get_gamepad_axis_movement(0, rl.GAMEPAD_AXIS_LEFT_X) > 0.3:
-            alien.x = alien.x + 1
-        elif pyray.get_gamepad_axis_movement(0, rl.GAMEPAD_AXIS_LEFT_X) < -0.3:
-            alien.x = alien.x - 1
-
+    if gamepad.up:
+        print("up")
+    if gamepad.y:
+        print("Y")
+    if gamepad.left_stick.x > 0.3:
+        alien.x = alien.x + 1
+    elif gamepad.left_stick.x < -0.3:
+        alien.x = alien.x - 1
 
 
 run()

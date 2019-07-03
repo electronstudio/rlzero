@@ -20,6 +20,6 @@ run()
 
 """TODO
     make box move faster
-    move in different direction
-    have two boxes with different colours
+    make box move in different direction
+    make two boxes with different colours
 """

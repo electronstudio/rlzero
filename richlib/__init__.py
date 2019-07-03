@@ -256,6 +256,8 @@ class Actor(Shape):
             rl.DrawSphere(self.calc_centre(), self.collision_radius, RED)
 
     def check_collision(self, other):
+        if not self.loaded:
+            self.load_data()
         if isinstance(other, Sphere):
             return rl.CheckCollisionSpheres(self.calc_centre(), self.collision_radius, other.pos, other.radius)
         elif isinstance(other, Cube):
@@ -280,6 +282,8 @@ class Cube(Actor):
         self.model.materials[0].shader = lightSystem.shader
 
     def check_collision(self, other):
+        if not self.loaded:
+            self.load_data()
         if isinstance(other, Sphere):
             return rl.CheckCollisionBoxSphere(
                 self.calc_bounding_box(), other.pos, other.radius
@@ -385,5 +389,94 @@ class Keyboard:
 
         return rl.IsKeyDown(getattr(rl, kname))
 
+class Mouse:
+    def get_position_on_ground(self, ground_level):
+        pos = pyray.get_mouse_position()
+        ray = pyray.get_mouse_ray(pos, camera[0])
+        rayhit = screen.get_collision_ray_ground(ray, ground_level)
+        return Vector([rayhit.position.x, rayhit.position.y, rayhit.position.z])
 
+    @property
+    def ground_position(self):
+        return self.get_position_on_ground(0)
+
+    @property
+    def left_button(self):
+        return pyray.is_mouse_button_down(rl.MOUSE_LEFT_BUTTON)
+
+    @property
+    def right_button(self):
+        return pyray.is_mouse_button_down(rl.MOUSE_RIGHT_BUTTON)
+
+    @property
+    def middle_button(self):
+        return pyray.is_mouse_button_down(rl.MOUSE_MIDDLE_BUTTON)
+
+    @property
+    def clicked(self):
+        return pyray.is_mouse_button_pressed(rl.MOUSE_LEFT_BUTTON)
+
+    def check_collision(self, actor):
+        if not actor.loaded:
+            actor.load_data()
+        pos = pyray.get_mouse_position()
+        ray = pyray.get_mouse_ray(pos, camera[0])
+        return pyray.check_collision_ray_box(ray, actor.calc_bounding_box())
+
+class Gamepad:
+    def __init__(self, id):
+        self.id = id
+
+    def test(self):
+        if pyray.is_gamepad_available(self.id):
+            print("Detected gamepad", self.id, ffi.string(pyray.get_gamepad_name(self.id)))
+
+    @property
+    def up(self):
+        return pyray.is_gamepad_button_down(self.id, rl.GAMEPAD_BUTTON_LEFT_FACE_UP)
+
+    @property
+    def down(self):
+        return pyray.is_gamepad_button_down(self.id, rl.GAMEPAD_BUTTON_LEFT_FACE_DOWN)
+
+    @property
+    def left(self):
+        return pyray.is_gamepad_button_down(self.id, rl.GAMEPAD_BUTTON_LEFT_FACE_LEFT)
+
+    @property
+    def right(self):
+        return pyray.is_gamepad_button_down(self.id, rl.GAMEPAD_BUTTON_LEFT_FACE_RIGHT)
+
+    @property
+    def y(self):
+        return pyray.is_gamepad_button_down(self.id, rl.GAMEPAD_BUTTON_RIGHT_FACE_UP)
+
+    @property
+    def a(self):
+        return pyray.is_gamepad_button_down(self.id, rl.GAMEPAD_BUTTON_RIGHT_FACE_DOWN)
+
+    @property
+    def x(self):
+        return pyray.is_gamepad_button_down(self.id, rl.GAMEPAD_BUTTON_RIGHT_FACE_LEFT)
+
+    @property
+    def b(self):
+        return pyray.is_gamepad_button_down(self.id, rl.GAMEPAD_BUTTON_RIGHT_FACE_RIGHT)
+
+    @property
+    def left_stick(self):
+        return Vector([pyray.get_gamepad_axis_movement(self.id, rl.GAMEPAD_AXIS_LEFT_X),
+                       pyray.get_gamepad_axis_movement(self.id, rl.GAMEPAD_AXIS_LEFT_Y)])
+
+    @property
+    def right_stick(self):
+        return Vector([pyray.get_gamepad_axis_movement(self.id, rl.GAMEPAD_AXIS_RIGHT_X),
+                       pyray.get_gamepad_axis_movement(self.id, rl.GAMEPAD_AXIS_RIGHT_Y)])
+
+
+
+mouse = Mouse()
 keyboard = Keyboard()
+gamepad = Gamepad(0)
+gamepad0 = gamepad
+gamepad1 = Gamepad(1)

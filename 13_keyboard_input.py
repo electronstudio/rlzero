@@ -10,19 +10,17 @@ def draw():
 
 
 def update():
-    if (keyboard.right):
+    if keyboard.right:
         alien.x = alien.x + 1
-    elif (keyboard.left):
+    elif keyboard.left:
         alien.x = alien.x - 1
 
 run()
 
 
-
-
 """TODO
     make the alien move up and down as well as left and right
-    use the += operator to change the alien.x more concisely
+    use the += operator to change the alien.x
     use the 'or' operator to allow WASD keys to move the alien
     in addition to the cursor keys
     make alien wrap around when he moves off edge of screen
