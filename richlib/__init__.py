@@ -165,6 +165,51 @@ class Shape:
 #             return self.check_collision(other.collision_sphere)
 
 
+class Sound:
+    def __init__(self, file, volume=1.0, pitch=1.0):
+        self.sound = None
+        self.file = file
+        self.loaded = False
+        self.volume = volume
+        self.pitch = pitch
+
+
+    def load_data(self):
+        self.loaded = True
+        file = data_dir + self.file + '.wav'
+        if not os.path.isfile(file):
+            file = str(PATH / 'sounds' / self.file) + '.wav'
+        if not os.path.isfile(file):
+            raise Exception(f"file {self.file} does not exist")
+        self.sound = rl.LoadSound(file.encode('utf-8'))
+        rl.SetSoundVolume(self.sound, self._volume)
+        rl.SetSoundPitch(self.sound, self._pitch)
+
+    def play(self):
+        if not self.loaded:
+            self.load_data()
+        rl.PlaySound(self.sound)
+
+    @property
+    def volume(self):
+        return self._volume
+
+    @volume.setter
+    def volume(self, value):
+        if(self.loaded):
+            rl.SetSoundVolume(self.sound, value)
+        self._volume = value
+
+    @property
+    def pitch(self):
+        return self._pitch
+
+    @pitch.setter
+    def pitch(self, value):
+        if(self.loaded):
+            rl.SetSoundPitch(self.sound, value)
+        self._pitch = value
+
 class Actor(Shape):
     @property
     def size(self):
@@ -196,7 +241,6 @@ class Actor(Shape):
 
     def load_data(self):
         self.loaded = True
-        print("*** DATA_DIR=", data_dir)
         file = data_dir + self.model_file + '.obj'
         if not os.path.isfile(file):
             file = str(PATH / 'models' / self.model_file) + '.obj'
@@ -320,6 +364,8 @@ def run():
     screen_height = 640
     title = "RichLib"
 
+    rl.InitAudioDevice()
+
     if hasattr(mod, "WIDTH"):
         screen_width = mod.WIDTH
 
@@ -378,16 +424,28 @@ def run():
     rl.CloseWindow()
 
 
+def fix_key(kname):
+    # return is a reserved word, so alias enter to return
+    if kname == 'enter':
+        kname = 'return'
+    kname = kname.upper()
+    if not kname.startswith("KEY_"):
+        kname = "KEY_" + kname
+    return kname
+
 class Keyboard:
     def __getattr__(self, kname):
-        # return is a reserved word, so alias enter to return
-        if kname == 'enter':
-            kname = 'return'
-        kname = kname.upper()
-        if not kname.startswith("KEY_"):
-            kname = "KEY_" + kname
+        f = fix_key(kname)
+        return rl.IsKeyDown(getattr(rl, f))
 
-        return rl.IsKeyDown(getattr(rl, kname))
+    def key_down(self, kname):
+        f = fix_key(kname)
+        return rl.IsKeyDown(getattr(rl, f))
+
+    def key_pressed(self, kname):
+        f = fix_key(kname)
+        return rl.IsKeyPressed(getattr(rl, f))
+
 
 class Mouse:
     def get_position_on_ground(self, ground_level):
