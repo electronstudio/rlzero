@@ -2,7 +2,7 @@
     Demo game
 """
 
-from richlib import *
+from rlzero import *
 import random
 import time
 

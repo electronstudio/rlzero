@@ -1,7 +1,7 @@
 """
     get the mouse position and test if mouse buttons are pressed
 """
-from richlib import *
+from rlzero import *
 
 cube = Cube((0, 10, 0), (10, 20, 10), 'blue')
 

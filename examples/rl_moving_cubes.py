@@ -2,7 +2,7 @@
     to make things move we need to add
     the update() function
 """
-from richlib import *
+from rlzero import *
 
 cube = Cube((0, 10, 0), (10, 20, 10), 'blue')
 

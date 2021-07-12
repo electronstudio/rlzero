@@ -1,7 +1,7 @@
 """
 Richlib has a gamepad API that is a bit different from Pygame's
 """
-from richlib import *
+from rlzero import *
 
 alien = Actor('trooper')
 alien.size = (20, 20, 20)

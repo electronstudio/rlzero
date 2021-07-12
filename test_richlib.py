@@ -1,4 +1,4 @@
-from richlib import *
+from rlzero import *
 
 
 #WIDTH=800

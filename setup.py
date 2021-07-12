@@ -9,12 +9,12 @@ README = (HERE / "README.md").read_text()
 
 # This call to setup() does all the work
 setup(
-    name="richlib",
+    name="rlzero",
     version="0.1.0",
     description="Pygame Zero like API to teach 3d games programming based on Raylib",
     long_description=README,
     long_description_content_type="text/markdown",
-    url="https://github.com/electronstudio/richlib",
+    url="https://github.com/electronstudio/rlzero",
     author="Electron Studio",
     author_email="github@electronstudio.co.uk",
     license="LGPLv3+",
@@ -25,7 +25,7 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
     ],
-    packages=["richlib"],
+    packages=["rlzero"],
     include_package_data=True,
     install_requires=["raylib==3.7.0post2"]
 )

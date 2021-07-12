@@ -1,2 +1,2 @@
-include richlib/*
-include richlib/models/*
+include rlzero/*
+include rlzero/models/*

@@ -1,7 +1,7 @@
 """
 IMPORTANT: switch Mu mode to "Python 3"
 """
-from richlib import *
+from rlzero import *
 
 WIDTH = 500
 HEIGHT = 500

@@ -13,7 +13,7 @@ and you could just copy any Raylib Python example code you find.  Then if you wa
 The normal way of using Richlib is not to write your own main game loop.  Instead, you set some variables to tell Richlib how you'd like
 your game to be:
 
-    from richlib import *
+    from rlzero import *
     
     WIDTH=800
     HEIGHT=640

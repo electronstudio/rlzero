@@ -4,7 +4,7 @@
     market, trooper, turret, watermill, well
     If you want any other objects you must provide a .obj file
 """
-from richlib import *
+from rlzero import *
 
 alien = Actor('trooper')
 alien.size = (20,20,20)

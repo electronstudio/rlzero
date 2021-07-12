@@ -3,7 +3,7 @@ Simple game that displays text on screen
 Note that text is 2d, not 3d, so it must be drawn in draw2d() function
 """
 
-from richlib import *
+from rlzero import *
 
 score = 0
 

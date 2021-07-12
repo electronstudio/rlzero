@@ -2,7 +2,7 @@
     Most of this code is copied from programs 12 and 13
 """
 
-from richlib import *
+from rlzero import *
 
 cube = Cube((0, 10, 0), (10, 20, 10), 'blue')
 alien = Actor('trooper')

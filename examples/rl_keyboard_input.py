@@ -1,4 +1,4 @@
-from richlib import *
+from rlzero import *
 alien = Actor('trooper')
 alien.size = (20,20,20)
 alien.pos = (0, 10, 10)

@@ -1,7 +1,7 @@
 """
     we can check if the mouse pointer is touching a 3d object
 """
-from richlib import *
+from rlzero import *
 
 cube = Cube((0, 10, 0), (10, 20, 10), 'blue')
 
