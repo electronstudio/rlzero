@@ -1,4 +1,4 @@
-""" Richlib, simple access to Raylib
+""" Richlib Zero, simple access to Raylib
 """
 __version__ = '0.1'
 
@@ -33,6 +33,8 @@ def clear(color=RAYWHITE):
 
 
 class Shape:
+    """This is a class"""
+
     @property
     def color(self):
         return self._color
@@ -173,7 +175,6 @@ class Sound:
         self.volume = volume
         self.pitch = pitch
 
-
     def load_data(self):
         self.loaded = True
         file = data_dir + self.file + '.wav'
@@ -196,7 +197,7 @@ class Sound:
 
     @volume.setter
     def volume(self, value):
-        if(self.loaded):
+        if (self.loaded):
             rl.SetSoundVolume(self.sound, value)
         self._volume = value
 
@@ -206,9 +207,10 @@ class Sound:
 
     @pitch.setter
     def pitch(self, value):
-        if(self.loaded):
+        if (self.loaded):
             rl.SetSoundPitch(self.sound, value)
         self._pitch = value
+
 
 class Actor(Shape):
     @property
@@ -247,7 +249,6 @@ class Actor(Shape):
         if not os.path.isfile(file):
             raise Exception(f"file {self.model_file} does not exist")
 
-
         self.model = rl.LoadModel(file.encode('utf-8'))
         mat = rl.LoadMaterialDefault()
         self.model.materials[0] = mat
@@ -259,7 +260,6 @@ class Actor(Shape):
         texture = rl.LoadTexture(tfile.encode('utf-8'))
         if texture.format:
             self.model.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE].texture = texture
-
 
         self.model.materials[0].shader = lightSystem.shader
         self.bounding_box = self.calc_bounding_box()
@@ -341,7 +341,7 @@ class Cube(Actor):
 
 
 class Sphere(Actor):
-    def __init__(self, position=(0,0,0), radius=10, color=RED, wires=False, wire_color=DARKGRAY):
+    def __init__(self, position=(0, 0, 0), radius=10, color=RED, wires=False, wire_color=DARKGRAY):
         super().__init__(model_file="", position=position, color=color, wires=wires, wire_color=wire_color,
                          collision_radius=radius)
         self.radius = radius
@@ -357,7 +357,7 @@ class Sphere(Actor):
         if not self.loaded:
             self.load_data()
         if isinstance(other, Sphere):
-            return rl.CheckCollisionSpheres(self.pos, self.radius,  other.pos, other.radius)
+            return rl.CheckCollisionSpheres(self.pos, self.radius, other.pos, other.radius)
         elif isinstance(other, Cube):
             return rl.CheckCollisionBoxSphere(other.calc_bounding_box(), self.pos, self.radius)
         elif isinstance(other, Actor):
@@ -393,7 +393,7 @@ def run():
 
     rl.InitWindow(screen_width, screen_height, title.encode('utf-8'))
 
-    lights0 = Light([50, 50, 50], Vector([0, 0, 0]), (150,150,150,255))
+    lights0 = Light([50, 50, 50], Vector([0, 0, 0]), (150, 150, 150, 255))
     # lights1 = Light(LIGHT_POINT, [4, 2, 4 ],  Vector([0,0,0]), RED)
     # lights2 = Light(LIGHT_POINT, [ 0, 4, 2 ],  Vector([0,0,0]), GREEN)
     # lights3 = Light(LIGHT_POINT, [ 0, 4, 2 ],  Vector([0,0,0]), BLUE)
@@ -443,6 +443,7 @@ def fix_key(kname):
         kname = "KEY_" + kname
     return kname
 
+
 class Keyboard:
     def __getattr__(self, kname):
         f = fix_key(kname)
@@ -490,6 +491,7 @@ class Mouse:
         pos = pyray.get_mouse_position()
         ray = pyray.get_mouse_ray(pos, camera[0])
         return pyray.check_collision_ray_box(ray, actor.calc_bounding_box())
+
 
 class Gamepad:
     def __init__(self, id):
@@ -540,7 +542,6 @@ class Gamepad:
     def right_stick(self):
         return Vector([pyray.get_gamepad_axis_movement(self.id, rl.GAMEPAD_AXIS_RIGHT_X),
                        pyray.get_gamepad_axis_movement(self.id, rl.GAMEPAD_AXIS_RIGHT_Y)])
-
 
 
 mouse = Mouse()
