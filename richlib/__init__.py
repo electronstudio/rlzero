@@ -23,7 +23,7 @@ camera.position = (0.0, 100, 100)
 camera.target = (0.0, 0.0, 0.0)
 camera.up = (0, 1, 0)
 camera.fovy = 45
-camera.type = rl.CAMERA_PERSPECTIVE
+camera.projection = rl.CAMERA_PERSPECTIVE
 
 mod = sys.modules['__main__']
 
@@ -258,7 +258,7 @@ class Actor(Shape):
 
         texture = rl.LoadTexture(tfile.encode('utf-8'))
         if texture.format:
-            self.model.materials[0].maps[rl.MAP_DIFFUSE].texture = texture
+            self.model.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE].texture = texture
 
 
         self.model.materials[0].shader = lightSystem.shader
@@ -352,6 +352,16 @@ class Sphere(Actor):
         mat = rl.LoadMaterialDefault()
         self.model.materials[0] = mat
         self.model.materials[0].shader = lightSystem.shader
+
+    def check_collision(self, other):
+        if not self.loaded:
+            self.load_data()
+        if isinstance(other, Sphere):
+            return rl.CheckCollisionSpheres(self.pos, self.radius,  other.pos, other.radius)
+        elif isinstance(other, Cube):
+            return rl.CheckCollisionBoxSphere(other.calc_bounding_box(), self.pos, self.radius)
+        elif isinstance(other, Actor):
+            return rl.CheckCollisionSpheres(self.pos, self.radius, other.calc_centre(), other.collision_radius)
 
 
 def getLightSystem():
