@@ -1,9 +1,6 @@
 rlzero
 ======
 
-Pygame Zero provides useful built-in objects to help you make games easily.
-
-
 
 .. currentmodule:: rlzero
 
@@ -14,17 +11,21 @@ Pygame Zero provides useful built-in objects to help you make games easily.
 
     Actor
     Cube
-    Shape
-    Sphere
     Keyboard
     Mouse
     Gamepad
+    Shape
+    Sphere
+    Sound
+
+
     run
     mouse
 
 
+.. automodule:: rlzero
+    :members:
+    :undoc-members:
 
 
 
-
-sadfafsd

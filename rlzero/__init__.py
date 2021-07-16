@@ -29,14 +29,23 @@ mod = sys.modules['__main__']
 
 
 def clear(color=RAYWHITE):
+    """
+    Clear the screen
+    :param Color color:
+    """
     rl.ClearBackground(Color(color))
 
 
 class Shape:
-    """This is a class"""
+    """
+    Abstract base class for all 3d objects.
+    """
 
     @property
     def color(self):
+        """
+        Base Color of the object.
+        """
         return self._color
 
     @color.setter
@@ -45,6 +54,9 @@ class Shape:
 
     @property
     def pos(self):
+        """
+        Position Vector in 3d space.
+        """
         return self._pos
 
     @pos.setter
@@ -53,6 +65,9 @@ class Shape:
 
     @property
     def wire_color(self):
+        """
+        If drawing wireframe, use this Color.
+        """
         return self._wire_color
 
     @wire_color.setter
@@ -61,6 +76,9 @@ class Shape:
 
     @property
     def x(self):
+        """
+        Shortcut to the x co-ordinate float of the object position
+        """
         return self.pos.x
 
     @x.setter
@@ -69,6 +87,9 @@ class Shape:
 
     @property
     def y(self):
+        """
+       Shortcut to the y co-ordinate float of the object position
+       """
         return self.pos.y
 
     @y.setter
@@ -77,6 +98,9 @@ class Shape:
 
     @property
     def z(self):
+        """
+       Shortcut to the z co-ordinate float of the object position
+       """
         return self.pos.z
 
     @z.setter
@@ -168,6 +192,9 @@ class Shape:
 
 
 class Sound:
+    """
+    A sound effect loaded from a wav file.
+    """
     def __init__(self, file, volume=1.0, pitch=1.0):
         self.sound = None
         self.file = file
@@ -176,6 +203,10 @@ class Sound:
         self.pitch = pitch
 
     def load_data(self):
+        """
+        Loads the sound data from wav file on disk.
+        Will be called automatically the first time the sound is played.
+        """
         self.loaded = True
         file = data_dir + self.file + '.wav'
         if not os.path.isfile(file):
@@ -187,12 +218,18 @@ class Sound:
         rl.SetSoundPitch(self.sound, self._pitch)
 
     def play(self):
+        """
+        Play the sound using the current volume and pitch.
+        """
         if not self.loaded:
             self.load_data()
         rl.PlaySound(self.sound)
 
     @property
     def volume(self):
+        """
+        How loud to play the sound. 0.0 is silent, 1.0 is full.
+        """
         return self._volume
 
     @volume.setter
@@ -203,6 +240,9 @@ class Sound:
 
     @property
     def pitch(self):
+        """
+        Multiply the same frequency by this float. 1.0 is default pitch.
+        """
         return self._pitch
 
     @pitch.setter
@@ -213,8 +253,15 @@ class Sound:
 
 
 class Actor(Shape):
+    """
+    3d object
+    """
+
     @property
     def size(self):
+        """
+        Multiply the size of the object by this float. 1.0 is normal size.
+        """
         return self._size
 
     @size.setter
@@ -224,6 +271,19 @@ class Actor(Shape):
     def __init__(self, model_file, position=(0, 0, 0), collision_radius=0, texture_file="",
                  rotation_axis=Vector([0, 1, 0]), rotation_angle=0, size=(1, 1, 1), color=WHITE, wires=False,
                  wire_color=DARKGRAY):
+        """
+
+        :param model_file:
+        :param position:
+        :param collision_radius:
+        :param texture_file:
+        :param rotation_axis:
+        :param rotation_angle:
+        :param size:
+        :param color:
+        :param wires:
+        :param wire_color:
+        """
         # super().__init__(position, collision_radius, color, wires, wire_color)
 
         self.pos = position
@@ -242,6 +302,10 @@ class Actor(Shape):
         self.loaded = False
 
     def load_data(self):
+        """
+        Loads the 3d model data from obj file on disk.
+        Will be called automatically the first time the model is drawn.
+        """
         self.loaded = True
         file = data_dir + self.model_file + '.obj'
         if not os.path.isfile(file):
@@ -265,6 +329,10 @@ class Actor(Shape):
         self.bounding_box = self.calc_bounding_box()
 
     def calc_bounding_box(self):
+        """
+        Calculates a box big enough to contain the object.
+        :return: The bounding box.
+        """
         if not hasattr(self, 'model'):
             return ((0, 0, 0), (0, 0, 0))
         bb = rl.MeshBoundingBox(self.model.meshes[0])
@@ -285,12 +353,22 @@ class Actor(Shape):
         return bb
 
     def calc_centre(self):
+        """
+        Calculates the centre of the object.
+
+        :returns: Vector -- centre position in global space
+        """
         centre_x = (self.bounding_box.max.x + self.bounding_box.min.x) / 2
         centre_y = (self.bounding_box.max.y + self.bounding_box.min.y) / 2
         centre_z = (self.bounding_box.max.z + self.bounding_box.min.z) / 2
         return (centre_x, centre_y, centre_z)
 
     def draw(self):
+        """
+        Draws the object.
+        Should be called from draw() or draw3d()
+        """
+
         if not self.loaded:
             self.load_data()
         self.bounding_box = self.calc_bounding_box()
@@ -300,6 +378,12 @@ class Actor(Shape):
             rl.DrawSphere(self.calc_centre(), self.collision_radius, RED)
 
     def check_collision(self, other):
+        """
+        Check if the object is currently colliding with another object
+
+        :param other: Actor - The other object
+        :return: bool
+        """
         if not self.loaded:
             self.load_data()
         if isinstance(other, Sphere):
@@ -307,10 +391,15 @@ class Actor(Shape):
         elif isinstance(other, Cube):
             return rl.CheckCollisionBoxSphere(other.calc_bounding_box(), self.calc_centre(), self.collision_radius)
         elif isinstance(other, Actor):
-            return rl.CheckCollisionSpheres(self.pos, self.collision_radius, other.pos, other.collision_radius)
+            return rl.CheckCollisionSpheres(self.calc_centre(), self.collision_radius, other.calc_centre(),
+                                            other.collision_radius)
 
 
 class Cube(Actor):
+    """
+    Actor with cube shaped mesh generated rather than loaded from file.
+    """
+
     def __init__(self, position=(0, 0, 0), size=(10, 10, 10), color=WHITE, wires=False,
                  wire_color=DARKGRAY,
                  rotation_axis=Vector([0, 1, 0]), rotation_angle=0):
@@ -341,6 +430,10 @@ class Cube(Actor):
 
 
 class Sphere(Actor):
+    """
+    Actor with sphere shaped mesh generated rather than loaded from file.
+    """
+
     def __init__(self, position=(0, 0, 0), radius=10, color=RED, wires=False, wire_color=DARKGRAY):
         super().__init__(model_file="", position=position, color=color, wires=wires, wire_color=wire_color,
                          collision_radius=radius)
@@ -367,31 +460,12 @@ class Sphere(Actor):
 def getLightSystem():
     return lightSystem
 
-
-def run():
-    global lightSystem, foo
-    screen_width = 800
-    screen_height = 640
-    title = "RichLib"
-
-    rl.InitAudioDevice()
-
-    if hasattr(mod, "WIDTH"):
-        screen_width = mod.WIDTH
-
-    if hasattr(mod, "HEIGHT"):
-        screen_height = mod.HEIGHT
-
-    if hasattr(mod, "TITLE"):
-        title = mod.TITLE
-
-    if hasattr(mod, "DATA_DIR"):
-        global data_dir
-        data_dir = mod.DATA_DIR
-
+def _pre_setup():
+    global lightSystem
     rl.SetConfigFlags(rl.FLAG_VSYNC_HINT + rl.FLAG_MSAA_4X_HINT)
 
-    rl.InitWindow(screen_width, screen_height, title.encode('utf-8'))
+    rl.InitWindow(1, 1, "title".encode('utf-8'))
+    rl.InitAudioDevice()
 
     lights0 = Light([50, 50, 50], Vector([0, 0, 0]), (150, 150, 150, 255))
     # lights1 = Light(LIGHT_POINT, [4, 2, 4 ],  Vector([0,0,0]), RED)
@@ -402,35 +476,68 @@ def run():
 
     rl.SetTargetFPS(60)
 
+def _setup():
+
+    screen_width = 800
+    screen_height = 640
+    title = "RichLib"
+
+
+
+    if hasattr(mod, "WIDTH"):
+        screen_width = mod.WIDTH
+
+    if hasattr(mod, "HEIGHT"):
+        screen_height = mod.HEIGHT
+
+    if hasattr(mod, "TITLE"):
+        title = mod.TITLE
+
+    pyray.set_window_size(screen_width, screen_height, title)
+
+    if hasattr(mod, "DATA_DIR"):
+        global data_dir
+        data_dir = mod.DATA_DIR
+
     if hasattr(mod, "CAMERA"):
         rl.SetCameraMode(camera[0], mod.CAMERA)
 
     if hasattr(mod, "init"):
         mod.init()
 
-    while not rl.WindowShouldClose():
-        if hasattr(mod, "update"):
+def _main_loop():
+    if hasattr(mod, "update"):
+        if (mod.update.__code__.co_argcount > 0):
+            mod.update(rl.GetFrameTime())
+        else:
             mod.update()
-        rl.UpdateCamera(camera)
-        lightSystem.update(camera.position)
-        if rl.IsKeyPressed(rl.KEY_F):
-            rl.ToggleFullscreen()
-        if rl.IsKeyPressed(rl.KEY_ESCAPE):
-            rl.Exit()
-        rl.BeginDrawing()
-        if hasattr(mod, "draw2dbackground"):
-            mod.draw2dbackground()
-        rl.BeginMode3D(camera[0])
-        pyray.draw_grid(100, 10)
-        if hasattr(mod, "draw"):
-            mod.draw()
-        if hasattr(mod, "draw3d"):
-            mod.draw3d()
-            lightSystem.draw()
-        rl.EndMode3D()
-        if hasattr(mod, "draw2d"):
-            mod.draw2d()
-        rl.EndDrawing()
+    rl.UpdateCamera(camera)
+    lightSystem.update(camera.position)
+    if rl.IsKeyPressed(rl.KEY_F):
+        rl.ToggleFullscreen()
+    if rl.IsKeyPressed(rl.KEY_ESCAPE):
+        rl.Exit()
+    rl.BeginDrawing()
+    if hasattr(mod, "draw2dbackground"):
+        mod.draw2dbackground()
+    rl.BeginMode3D(camera[0])
+    pyray.draw_grid(100, 10)
+    if hasattr(mod, "draw"):
+        mod.draw()
+    if hasattr(mod, "draw3d"):
+        mod.draw3d()
+        lightSystem.draw()
+    rl.EndMode3D()
+    if hasattr(mod, "draw2d"):
+        mod.draw2d()
+    rl.EndDrawing()
+
+def run():
+    _setup()
+
+    while not rl.WindowShouldClose():
+        _main_loop()
+
     rl.CloseWindow()
 
 
@@ -544,8 +651,20 @@ class Gamepad:
                        pyray.get_gamepad_axis_movement(self.id, rl.GAMEPAD_AXIS_RIGHT_Y)])
 
 
+
 mouse = Mouse()
+"""Default Mouse object"""
+
 keyboard = Keyboard()
+"""Default Keyboard object"""
+
 gamepad = Gamepad(0)
+"""First Gamepad object"""
+
 gamepad0 = gamepad
+
 gamepad1 = Gamepad(1)
+"""Second Gamepad object"""
+
+
+_pre_setup()

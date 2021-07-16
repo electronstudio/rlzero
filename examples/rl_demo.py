@@ -13,7 +13,7 @@ JUMP_POWER = 2
 start_time = time.time()
 time_left = TIME
 
-CAMERA = screen.CAMERA_FIRST_PERSON
+CAMERA = CAMERA_PERSPECTIVE
 
 balls = []
 for i in range(0, NUMBER_OF_BALLS):
@@ -44,6 +44,7 @@ def draw():
     alien.draw()
     for ball in balls:
         ball.draw()
+        pyray.draw_circle_3d((ball.pos.x, 0, ball.pos.z),10,(1,0,0),90,BLACK)
 
 
 def draw2d():
@@ -53,9 +54,12 @@ def draw2d():
         screen.draw_text(f"Your Score: {score}\nOUT OF TIME", 30, 50, 50, RED)
 
 
-def update():
+def update(delta):
     global score
     global time_left
+
+    print("frame delta: ", delta)
+    camera.target = alien.pos
 
     time_left = int(TIME + (start_time - time.time()))
     if time_left <= 0:
