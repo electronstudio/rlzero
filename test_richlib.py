@@ -1,5 +1,5 @@
 from rlzero import *
-
+from rlzero.rlights import Light
 
 #WIDTH=200
 #HEIGHT=200
@@ -62,7 +62,7 @@ def update_player():
 def update_sphere():
     #gamepad.test()
     #gamepad1.test()
-    print(gamepad.left_stick.x)
+    #print(gamepad.left_stick.x)
     if gamepad.left_stick.x > 0.3:
         enemy_sphere.pos.x += 2
     elif gamepad.left_stick.x < -0.3:
@@ -108,6 +108,7 @@ def draw3d():
 def draw2d():
     screen.draw_text("Move player with cursors to collide", 220, 40, 20, (255,0,0,255))
     pyray.draw_fps(20,20)
+
 
 
 run()

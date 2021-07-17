@@ -27,5 +27,10 @@ setup(
     ],
     packages=["rlzero"],
     include_package_data=True,
+    # entry_points={
+    #     'console_scripts': [
+    #         'rlzrun = rlzero.runner:main'
+    #     ]
+    # },
     install_requires=["raylib==3.7.0post2"]
 )
