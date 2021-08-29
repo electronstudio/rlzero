@@ -2,9 +2,7 @@ from raylib.static import ffi, rl
 from .util import *
 import rlzero.globals as Globals
 import os
-import pathlib
 
-PATH = pathlib.Path(__file__).parent
 
 class Shape:
     """
@@ -161,67 +159,6 @@ class Shape:
 #             return self.check_collision(other.collision_sphere)
 
 
-class Sound:
-    """
-    A sound effect loaded from a wav file.
-    """
-
-    def __init__(self, file, volume=1.0, pitch=1.0):
-        self.sound = None
-        self.file = file
-        self.loaded = False
-        self.volume = volume
-        self.pitch = pitch
-
-    def load_data(self):
-        """
-        Loads the sound data from wav file on disk.
-        Will be called automatically the first time the sound is played.
-        """
-        self.loaded = True
-        file = Globals.data_dir + self.file + '.wav'
-        if not os.path.isfile(file):
-            file = str(PATH / 'sounds' / self.file) + '.wav'
-        if not os.path.isfile(file):
-            raise Exception(f"file {self.file} does not exist")
-        self.sound = rl.LoadSound(file.encode('utf-8'))
-        rl.SetSoundVolume(self.sound, self._volume)
-        rl.SetSoundPitch(self.sound, self._pitch)
-
-    def play(self):
-        """
-        Play the sound using the current volume and pitch.
-        """
-        if not self.loaded:
-            self.load_data()
-        rl.PlaySound(self.sound)
-
-    @property
-    def volume(self):
-        """
-        How loud to play the sound. 0.0 is silent, 1.0 is full.
-        """
-        return self._volume
-
-    @volume.setter
-    def volume(self, value):
-        if (self.loaded):
-            rl.SetSoundVolume(self.sound, value)
-        self._volume = value
-
-    @property
-    def pitch(self):
-        """
-        Multiply the same frequency by this float. 1.0 is default pitch.
-        """
-        return self._pitch
-
-    @pitch.setter
-    def pitch(self, value):
-        if (self.loaded):
-            rl.SetSoundPitch(self.sound, value)
-        self._pitch = value
-
 
 class Actor(Shape):
     """
@@ -275,13 +212,32 @@ class Actor(Shape):
 
     def load_data(self):
         """
-        Loads the 3d model data from obj file on disk.
+        Loads the 3d model data from glb file on disk.
         Will be called automatically the first time the model is drawn.
+        """
+        self.loaded = True
+        file = Globals.data_dir + os.path.sep + 'models' + os.path.sep + self.model_file + '.glb'
+        print("trying ",file)
+        if not os.path.isfile(file):
+            file = str(Globals.PATH / 'models' / self.model_file) + '.glb'
+            print("trying ",file)
+        if not os.path.isfile(file):
+            raise Exception(f"file {self.model_file} does not exist")
+
+        self.model = rl.LoadModel(file.encode('utf-8'))
+
+
+        self.model.materials[0].shader = Globals.light_system.shader
+        self.bounding_box = self.calc_bounding_box()
+
+    def load_data_obj(self):
+        """
+        Loads the 3d model data from obj file on disk.
         """
         self.loaded = True
         file = Globals.data_dir + self.model_file + '.obj'
         if not os.path.isfile(file):
-            file = str(PATH / 'models' / self.model_file) + '.obj'
+            file = str(Globals.PATH / 'models' / self.model_file) + '.obj'
         if not os.path.isfile(file):
             raise Exception(f"file {self.model_file} does not exist")
 
@@ -291,7 +247,7 @@ class Actor(Shape):
 
         tfile = Globals.data_dir + self.texture_file + '.png'
         if not os.path.isfile(tfile):
-            tfile = str(PATH / 'models' / self.texture_file) + '.png'
+            tfile = str(Globals.PATH / 'models' / self.texture_file) + '.png'
 
         texture = rl.LoadTexture(tfile.encode('utf-8'))
         if texture.format:
@@ -299,6 +255,7 @@ class Actor(Shape):
 
         self.model.materials[0].shader = Globals.light_system.shader
         self.bounding_box = self.calc_bounding_box()
+
 
     def calc_bounding_box(self):
         """

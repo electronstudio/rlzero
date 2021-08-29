@@ -13,7 +13,7 @@ JUMP_POWER = 2
 start_time = time.time()
 time_left = TIME
 
-CAMERA = CAMERA_PERSPECTIVE
+CAMERA =pyray.CAMERA_PERSPECTIVE
 
 balls = []
 for i in range(0, NUMBER_OF_BALLS):
@@ -26,13 +26,15 @@ for i in range(0, NUMBER_OF_BALLS):
 
 score = 0
 
-alien = Actor('trooper')
-alien.size = (10, 10, 10)
-alien.collision_radius = 5
+DATA_DIR="data"
 
-alien.yv = 0
-alien.xv = 0
-alien.zv = 0
+wiz = Actor('rpg_characters/Wizard')
+wiz.size = (10, 10, 10)
+wiz.collision_radius = 5
+
+wiz.yv = 0
+wiz.xv = 0
+wiz.zv = 0
 
 sound = Sound('eep')
 sound.volume = 0.7
@@ -41,7 +43,7 @@ sound.pitch = 0.5
 
 def draw():
     clear()
-    alien.draw()
+    wiz.draw()
     for ball in balls:
         ball.draw()
         pyray.draw_circle_3d((ball.pos.x, 0, ball.pos.z),10,(1,0,0),90,BLACK)
@@ -59,45 +61,45 @@ def update(delta):
     global time_left
 
     print("frame delta: ", delta)
-    camera.target = alien.pos
+    camera.target = wiz.pos
 
     time_left = int(TIME + (start_time - time.time()))
     if time_left <= 0:
         return
 
-    alien.yv -= 0.05
+    wiz.yv -= 0.05
 
-    alien.x += alien.xv
-    alien.y += alien.yv
-    alien.z += alien.zv
+    wiz.x += wiz.xv
+    wiz.y += wiz.yv
+    wiz.z += wiz.zv
 
-    if alien.y <= 0:  # Only control when alien is on ground
+    if wiz.y <= 0:  # Only control when wiz is on ground
         if keyboard.right:
-            alien.xv += 0.1
+            wiz.xv += 0.1
         elif keyboard.left:
-            alien.xv -= 0.1
+            wiz.xv -= 0.1
         if keyboard.down:
-            alien.zv += 0.1
+            wiz.zv += 0.1
         elif keyboard.up:
-            alien.zv -= 0.1
+            wiz.zv -= 0.1
 
         if keyboard.space:
-            alien.yv = JUMP_POWER
+            wiz.yv = JUMP_POWER
 
-        if alien.xv > 0.05:
-            alien.xv -= 0.05
-        elif alien.xv < -0.05:
-            alien.xv += 0.05
+        if wiz.xv > 0.05:
+            wiz.xv -= 0.05
+        elif wiz.xv < -0.05:
+            wiz.xv += 0.05
 
-        if alien.zv > 0.05:
-            alien.zv -= 0.05
-        elif alien.zv < -0.05:
-            alien.zv += 0.05
+        if wiz.zv > 0.05:
+            wiz.zv -= 0.05
+        elif wiz.zv < -0.05:
+            wiz.zv += 0.05
 
-        alien.y = 0
+        wiz.y = 0
 
     for ball in balls:
-        if alien.check_collision(ball):
+        if wiz.check_collision(ball):
             balls.remove(ball)
             sound.play()
             score += 1

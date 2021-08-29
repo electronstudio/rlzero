@@ -3,6 +3,7 @@
     Click the mouse to play the sound.
 """
 from rlzero import *
+DATA_DIR="data"
 sound = Sound('eep')
 sound.volume = 0.7
 sound.pitch = 0.5

@@ -3,7 +3,11 @@ from raylib.pyray import PyRay
 from raylib.static import ffi, rl
 pyray = PyRay()
 
+
 class Gamepad:
+    """
+    Handles input from gamepads
+    """
     def __init__(self, id):
         self.id = id
 

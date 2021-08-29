@@ -32,5 +32,6 @@ setup(
     #         'rlzrun = rlzero.runner:main'
     #     ]
     # },
-    install_requires=["raylib==3.7.0post2"]
+    scripts=['bin/rlzrun'],
+    install_requires=["raylib==3.7.0post3"]
 )

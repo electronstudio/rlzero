@@ -1,9 +1,9 @@
 from .util import *
 from raylib.pyray import PyRay
 from raylib.static import ffi, rl
-pyray = PyRay()
+#pyray = PyRay()
 
-def fix_key(kname):
+def _fix_key(kname):
     # return is a reserved word, so alias enter to return
     if kname == 'enter':
         kname = 'return'
@@ -14,15 +14,25 @@ def fix_key(kname):
 
 
 class Keyboard:
+    """
+    Handles input from keyboard
+    """
     def __getattr__(self, kname):
-        f = fix_key(kname)
+        f = _fix_key(kname)
         return rl.IsKeyDown(getattr(rl, f))
 
+
     def key_down(self, kname):
-        f = fix_key(kname)
+        """
+        Test if key is currently down
+        """
+        f = _fix_key(kname)
         return rl.IsKeyDown(getattr(rl, f))
 
     def key_pressed(self, kname):
-        f = fix_key(kname)
+        """
+        Test if key was pressed recently
+        """
+        f = _fix_key(kname)
         return rl.IsKeyPressed(getattr(rl, f))
 

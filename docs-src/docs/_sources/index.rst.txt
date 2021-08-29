@@ -1,0 +1,30 @@
+.. RL Zero documentation master file, created by
+   sphinx-quickstart on Mon Jul 12 14:03:57 2021.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to RLZero
+===================================
+
+.. toctree::
+   :maxdepth: 3
+   :caption: Contents:
+
+   README
+   rlzero
+   examples
+
+.. toctree::
+   :maxdepth: 3
+   :caption: Additional:
+
+   raylib
+   pyray
+   examples/rl_collisions.py
+
+* :ref:`genindex`
+* :ref:`search`
+
+
+
+

@@ -12,12 +12,11 @@ import os
 import rlzero.rlights as Lights
 import rlzero.globals as Globals
 from .shape import *
-import rlzero.keyboard as Keyboard
-import rlzero.mouse as Mouse
-import rlzero.gamepad as Gamepad
-
-
-
+from .sound import *
+#import rlzero.keyboard as Keyboard
+from .keyboard import Keyboard
+from .mouse import Mouse
+from .gamepad import Gamepad
 from raylib.pyray import PyRay
 
 pyray = PyRay()
@@ -30,6 +29,7 @@ camera.up = (0, 1, 0)
 camera.fovy = 45
 camera.projection = rl.CAMERA_PERSPECTIVE
 
+Globals.camera = camera
 
 # mod = sys.modules['__main__']
 
@@ -133,18 +133,18 @@ def run(m=sys.modules['__main__']):
 
 
 
-mouse = Mouse.Mouse()
+mouse = Mouse()
 """Default Mouse object"""
 
-keyboard = Keyboard.Keyboard()
+keyboard = Keyboard()
 """Default Keyboard object"""
 
-gamepad = Gamepad.Gamepad(0)
+gamepad = Gamepad(0)
 """First Gamepad object"""
 
 gamepad0 = gamepad
 
-gamepad1 = Gamepad.Gamepad(1)
+gamepad1 = Gamepad(1)
 """Second Gamepad object"""
 
 _pre_setup()

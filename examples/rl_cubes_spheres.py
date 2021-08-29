@@ -27,5 +27,5 @@ run()
     Change the colors and positions of the cubes.
     Make sure you understand (x,y,z) co-ordinates
     (In maths this called a 'Cartesian coordinate system'
-    and everything we do in Richlib will use it)
+    and everything we do in RLZero will use it)
 """
