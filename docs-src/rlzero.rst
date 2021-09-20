@@ -8,7 +8,7 @@ rlzero
     :toctree: generated
     :recursive:
 
-    Actor
+    Model
     Cube
     Keyboard
     Mouse

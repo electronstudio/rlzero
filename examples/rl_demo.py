@@ -28,7 +28,7 @@ score = 0
 
 DATA_DIR="data"
 
-wiz = Actor('rpg_characters/Wizard')
+wiz = Model('rpg_characters/Wizard')
 wiz.size = (10, 10, 10)
 wiz.collision_radius = 5
 

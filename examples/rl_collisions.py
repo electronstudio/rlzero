@@ -6,7 +6,7 @@ from rlzero import *
 
 cube = Cube((0, 10, 0), (10, 20, 10), 'blue')
 DATA_DIR="data"
-wiz = Actor('rpg_characters/Wizard')
+wiz = Model('rpg_characters/Wizard')
 wiz.size = (20,20,20)
 wiz.collision_radius = 20
 

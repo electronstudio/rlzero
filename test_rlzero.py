@@ -14,14 +14,14 @@ sound.pitch = 0.5
 player = Cube((0, 10, 20), (10, 20, 10), 'green')
 enemy_box = Cube((-40, 10, 0), (20, 20, 20), (150,0,0))
 enemy_sphere = Sphere((40, 15, 0), 15, 'gray')
-dragon = Actor("monsters/Dragon", collision_radius=15, wires=False)
+dragon = Model("monsters/Dragon", collision_radius=15, wires=False)
 dragon.z=-50
 dragon.x=0
 dragon.size.y=10
 dragon.size.x=10
 dragon.size.z=10
 
-wiz = Actor("rpg_characters/Wizard", collision_radius=20, wires=False, color=GREEN)
+wiz = Model("rpg_characters/Wizard", collision_radius=20, wires=False, color=GREEN)
 wiz.z=-100
 wiz.x=50
 wiz.y=-50

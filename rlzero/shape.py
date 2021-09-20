@@ -129,7 +129,7 @@ class Shape:
 #             return r
 #         elif isinstance(other, Box):
 #             return rl.CheckCollisionBoxes(self.get_bounding_box(), other.get_bounding_box())
-#         elif isinstance(other, Actor):
+#         elif isinstance(other, Model):
 #             return self.check_collision(other.collision_sphere)
 
 
@@ -155,12 +155,12 @@ class Shape:
 #             return rl.CheckCollisionBoxSphere(
 #                 other.get_bounding_box(), self.pos, self.radius
 #             )
-#         elif isinstance(other, Actor):
+#         elif isinstance(other, Model):
 #             return self.check_collision(other.collision_sphere)
 
 
 
-class Actor(Shape):
+class Model(Shape):
     """
     3d object
     """
@@ -311,7 +311,7 @@ class Actor(Shape):
         """
         Check if the object is currently colliding with another object
 
-        :param other: Actor - The other object
+        :param other: Model - The other object
         :return: bool
         """
         if not self.loaded:
@@ -322,15 +322,15 @@ class Actor(Shape):
         elif isinstance(other, Cube):
             return rl.CheckCollisionBoxSphere(other.calc_bounding_box(), self.calc_centre(),
                                               self.collision_radius)
-        elif isinstance(other, Actor):
+        elif isinstance(other, Model):
             return rl.CheckCollisionSpheres(self.calc_centre(), self.collision_radius,
                                             other.calc_centre(),
                                             other.collision_radius)
 
 
-class Cube(Actor):
+class Cube(Model):
     """
-    Actor with cube shaped mesh generated rather than loaded from file.
+    Model with cube shaped mesh generated rather than loaded from file.
     """
 
     def __init__(self, position=(0, 0, 0), size=(10, 10, 10), color=WHITE, wires=False,
@@ -357,15 +357,15 @@ class Cube(Actor):
             )
         elif isinstance(other, Cube):
             return rl.CheckCollisionBoxes(self.calc_bounding_box(), other.calc_bounding_box())
-        elif isinstance(other, Actor):
+        elif isinstance(other, Model):
             return rl.CheckCollisionBoxSphere(
                 self.calc_bounding_box(), other.calc_centre(), other.collision_radius
             )
 
 
-class Sphere(Actor):
+class Sphere(Model):
     """
-    Actor with sphere shaped mesh generated rather than loaded from file.
+    Model with sphere shaped mesh generated rather than loaded from file.
     """
 
     def __init__(self, position=(0, 0, 0), radius=10, color=RED, wires=False, wire_color=DARKGRAY):
@@ -388,7 +388,9 @@ class Sphere(Actor):
             return rl.CheckCollisionSpheres(self.pos, self.radius, other.pos, other.radius)
         elif isinstance(other, Cube):
             return rl.CheckCollisionBoxSphere(other.calc_bounding_box(), self.pos, self.radius)
-        elif isinstance(other, Actor):
+        elif isinstance(other, Model):
             return rl.CheckCollisionSpheres(self.pos, self.radius, other.calc_centre(),
                                             other.collision_radius)
+
+
 

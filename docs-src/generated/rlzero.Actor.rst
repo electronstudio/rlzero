@@ -1,9 +1,9 @@
-﻿rlzero.Actor
+﻿rlzero.Model
 ============
 
 .. currentmodule:: rlzero
 
-.. autoclass:: Actor
+.. autoclass:: Model
 
    
    .. automethod:: __init__
@@ -13,13 +13,13 @@
 
    .. autosummary::
    
-      ~Actor.__init__
-      ~Actor.calc_bounding_box
-      ~Actor.calc_centre
-      ~Actor.check_collision
-      ~Actor.draw
-      ~Actor.load_data
-      ~Actor.load_data_obj
+      ~Model.__init__
+      ~Model.calc_bounding_box
+      ~Model.calc_centre
+      ~Model.check_collision
+      ~Model.draw
+      ~Model.load_data
+      ~Model.load_data_obj
    
    
 
@@ -29,12 +29,12 @@
 
    .. autosummary::
    
-      ~Actor.color
-      ~Actor.pos
-      ~Actor.size
-      ~Actor.wire_color
-      ~Actor.x
-      ~Actor.y
-      ~Actor.z
+      ~Model.color
+      ~Model.pos
+      ~Model.size
+      ~Model.wire_color
+      ~Model.x
+      ~Model.y
+      ~Model.z
    
    

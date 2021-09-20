@@ -1,7 +1,7 @@
 from rlzero import *
 DATA_DIR="data"
 
-wiz = Actor('rpg_characters/Wizard')
+wiz = Model('rpg_characters/Wizard')
 wiz.size = (20,20,20)
 wiz.pos = (0, 10, 10)
 

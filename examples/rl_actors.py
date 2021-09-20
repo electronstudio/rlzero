@@ -1,11 +1,11 @@
 """
-    Actors are very similar to cubes!
+    Models are very similar to cubes!
 """
 from rlzero import *
 
 DATA_DIR="data"
 
-wiz = Actor('rpg_characters/Wizard')
+wiz = Model('rpg_characters/Wizard')
 wiz.size = (20,20,20)
 
 
