@@ -34,7 +34,7 @@ Globals.camera = camera
 # mod = sys.modules['__main__']
 
 
-def clear(color=RAYWHITE):
+def clear(color=BLACK):
     """
     Clear the screen
     :param Color color:
@@ -83,6 +83,7 @@ def _setup():
     if hasattr(mod, "DATA_DIR"):
         #global data_dir
         Globals.data_dir = mod.DATA_DIR
+        print("SET dAtaDIR ",mod.DATA_DIR)
 
     if hasattr(mod, "CAMERA"):
         rl.SetCameraMode(camera[0], mod.CAMERA)

@@ -1,7 +1,10 @@
-from raylib.static import ffi, rl
+from raylib import ffi, rl
 from .util import *
 import rlzero.globals as Globals
 import os
+
+from raylib.pyray import PyRay
+pr = PyRay()
 
 
 class Shape:
@@ -77,9 +80,9 @@ class Shape:
 
 
 # class Box(Shape):
-#     def __init__(self, position, size, color=RED, wires=True, wire_color=DARKGRAY):
+#     def __init__(self, position, scale, color=RED, wires=True, wire_color=DARKGRAY):
 #         self.pos = position
-#         self.size = size
+#         self.scale = scale
 #         self.color = color
 #         self.wire_color = wire_color
 #         self.wires = wires
@@ -91,34 +94,34 @@ class Shape:
 #     #     self.pos.key = value
 #
 #     @property
-#     def size(self):
-#         return self._size
+#     def scale(self):
+#         return self._scale
 #
-#     @size.setter
-#     def size(self, value):
-#         print("setting size ", value, type(value))
-#         self._size = Vector(value)
+#     @scale.setter
+#     def scale(self, value):
+#         print("setting scale ", value, type(value))
+#         self._scale = Vector(value)
 #
 #     def get_bounding_box(self):
 #         return (
 #             (
-#                 self.pos.x - self.size.x / 2,
-#                 self.pos.y - self.size.y / 2,
-#                 self.pos.z - self.size.z / 2,
+#                 self.pos.x - self.scale.x / 2,
+#                 self.pos.y - self.scale.y / 2,
+#                 self.pos.z - self.scale.z / 2,
 #             ),
 #             (
-#                 self.pos.x + self.size.x / 2,
-#                 self.pos.y + self.size.y / 2,
-#                 self.pos.z + self.size.z / 2,
+#                 self.pos.x + self.scale.x / 2,
+#                 self.pos.y + self.scale.y / 2,
+#                 self.pos.z + self.scale.z / 2,
 #             )
 #         )
 #
 #     def draw(self):
 #         #print("draw color ",self.color)
-#         rl.DrawCubeV(self.pos, self.size, self.color)
+#         rl.DrawCubeV(self.pos, self.scale, self.color)
 #         if self.wires:
 #             rl.DrawCubeWiresV(
-#                 self.pos, self.size, self.wire_color
+#                 self.pos, self.scale, self.wire_color
 #             )
 #
 #     def check_collision(self, other):
@@ -166,18 +169,18 @@ class Model(Shape):
     """
 
     @property
-    def size(self):
+    def scale(self):
         """
-        Multiply the size of the object by this float. 1.0 is normal size.
+        Multiply the scale of the object by this float. 1.0 is normal scale.
         """
-        return self._size
+        return self._scale
 
-    @size.setter
-    def size(self, value):
-        self._size = Vector(value)
+    @scale.setter
+    def scale(self, value):
+        self._scale = Vector(value)
 
-    def __init__(self, model_file, position=(0, 0, 0), collision_radius=0, texture_file="",
-                 rotation_axis=Vector([0, 1, 0]), rotation_angle=0, size=(1, 1, 1), color=WHITE,
+    def __init__(self, model_file, pos=(0, 0, 0), collision_radius=0, texture_file="",
+                 rotation_axis=Vector([0, 1, 0]), rotation_angle=0, scale=(1, 1, 1), color=WHITE,
                  wires=False,
                  wire_color=DARKGRAY):
         """
@@ -188,14 +191,14 @@ class Model(Shape):
         :param texture_file:
         :param rotation_axis:
         :param rotation_angle:
-        :param size:
+        :param scale:
         :param color:
         :param wires:
         :param wire_color:
         """
         # super().__init__(position, collision_radius, color, wires, wire_color)
 
-        self.pos = position
+        self.pos = pos
         self.color = color
         self.wire_color = wire_color
         self.wires = wires
@@ -204,7 +207,7 @@ class Model(Shape):
         if texture_file == "":
             texture_file = model_file + "_diffuse"
         self.texture_file = texture_file
-        self.size = size
+        self.scale = scale
         self.rotation_axis = rotation_axis
         self.rotation_angle = rotation_angle
         self.collision_radius = collision_radius
@@ -266,12 +269,12 @@ class Model(Shape):
             return ((0, 0, 0), (0, 0, 0))
         bb = rl.MeshBoundingBox(self.model.meshes[0])
 
-        bb.min.x *= self.size.x
-        bb.min.y *= self.size.y
-        bb.min.z *= self.size.z
-        bb.max.x *= self.size.x
-        bb.max.y *= self.size.y
-        bb.max.z *= self.size.z
+        bb.min.x *= self.scale.x
+        bb.min.y *= self.scale.y
+        bb.min.z *= self.scale.z
+        bb.max.x *= self.scale.x
+        bb.max.y *= self.scale.y
+        bb.max.z *= self.scale.z
 
         bb.min.x += self.pos.x
         bb.min.y += self.pos.y
@@ -301,7 +304,7 @@ class Model(Shape):
         if not self.loaded:
             self.load_data()
         self.bounding_box = self.calc_bounding_box()
-        rl.DrawModelEx(self.model, self.pos, self.rotation_axis, self.rotation_angle, self.size,
+        rl.DrawModelEx(self.model, self.pos, self.rotation_axis, self.rotation_angle, self.scale,
                        self.color)
         if self.wires:
             rl.DrawBoundingBox(self.bounding_box, self.wire_color)
@@ -333,12 +336,12 @@ class Cube(Model):
     Model with cube shaped mesh generated rather than loaded from file.
     """
 
-    def __init__(self, position=(0, 0, 0), size=(10, 10, 10), color=WHITE, wires=False,
+    def __init__(self, position=(0, 0, 0), scale=(10, 10, 10), color=WHITE, wires=False,
                  wire_color=DARKGRAY,
                  rotation_axis=Vector([0, 1, 0]), rotation_angle=0):
         super().__init__(model_file="", position=position, rotation_axis=rotation_axis,
                          rotation_angle=rotation_angle,
-                         size=size, color=color, wires=wires, wire_color=wire_color)
+                         scale=scale, color=color, wires=wires, wire_color=wire_color)
         self.loaded = False
 
     def load_data(self):
@@ -393,4 +396,72 @@ class Sphere(Model):
                                             other.collision_radius)
 
 
+class Sprite(Shape):
+    """
+    2d object
+    """
 
+    @property
+    def scale(self):
+        """
+        Multiply the scale of the object by this float. 1.0 is normal scale.
+        """
+        return self._scale
+
+    @scale.setter
+    def scale(self, value):
+        self._scale = value
+
+    def __init__(self, image_file, pos=(0, 0), collision_radius=0,
+                 rotation_angle=0, scale=1.0, color=WHITE):
+        """
+
+        :param image_file:
+        :param position:
+        :param collision_radius:
+        :param rotation_angle:
+        :param scale:
+        :param color:
+        """
+        # super().__init__(position, collision_radius, color, wires, wire_color)
+
+        self.pos = pos
+        self.color = color
+
+
+        self.image_file = image_file
+
+        self.scale = scale
+
+        self.rotation_angle = rotation_angle
+        self.collision_radius = collision_radius
+
+        self.loaded = False
+
+    def load_data(self):
+        self.loaded = True
+        file = Globals.data_dir + os.path.sep + 'images' + os.path.sep + self.image_file + '.png'
+        print("trying ",file)
+        if not os.path.isfile(file):
+            file = str(Globals.PATH / 'images' / self.image_file) + '.png'
+            print("trying ",file)
+        if not os.path.isfile(file):
+            raise Exception(f"file {self.image_file} does not exist")
+
+        self.texture = pr.load_texture(file)
+
+
+    def colliderect(self, other):
+        if not self.loaded:
+            self.load_data()
+        if not other.loaded:
+            other.load_data()
+        r1 = pr.Rectangle(self.x, self.y, self.texture.width*self.scale, self.texture.height*self.scale)
+        r2 = pr.Rectangle(other.x, other.y, other.texture.width*other.scale, other.texture.height*other.scale)
+        return pr.check_collision_recs(r1, r2)
+
+    def draw(self):
+        if not self.loaded:
+            self.load_data()
+        print("SCALE ",self.scale)
+        pr.draw_texture_ex(self.texture, self.pos, self.rotation_angle, self.scale, self.color)
