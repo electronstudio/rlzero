@@ -1,2 +1,6 @@
 include rlzero/*
-include rlzero/models/*
+include rlzero/data/*
+include rlzero/data/models/*
+include rlzero/data/sounds/*
+include rlzero/data/images/*
+
