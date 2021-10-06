@@ -2,7 +2,7 @@
 """
 __version__ = '0.1'
 
-from raylib.static import ffi, rl
+from raylib import ffi, rl
 # from ..dynamic import ffi, raylib as rl
 from raylib.colors import *
 from .util import *
@@ -110,14 +110,14 @@ def _main_loop():
         mod.draw2dbackground()
     rl.BeginMode3D(camera[0])
     pyray.draw_grid(100, 10)
-    if hasattr(mod, "draw"):
-        mod.draw()
     if hasattr(mod, "draw3d"):
         mod.draw3d()
         Globals.light_system.draw()
     rl.EndMode3D()
     if hasattr(mod, "draw2d"):
         mod.draw2d()
+    if hasattr(mod, "draw"):
+        mod.draw()
     rl.EndDrawing()
 
 

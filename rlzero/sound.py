@@ -1,4 +1,4 @@
-from raylib.static import ffi, rl
+from raylib import ffi, rl
 import rlzero.globals as Globals
 import os
 

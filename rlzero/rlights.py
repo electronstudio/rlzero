@@ -1,4 +1,4 @@
-from raylib.static import *
+from raylib import *
 from raylib.pyray import PyRay
 from .util import *
 import pathlib

@@ -440,15 +440,15 @@ class Sprite(Shape):
 
     def load_data(self):
         self.loaded = True
-        file = Globals.data_dir + os.path.sep + 'images' + os.path.sep + self.image_file + '.png'
-        print("trying ",file)
-        if not os.path.isfile(file):
-            file = str(Globals.PATH / 'images' / self.image_file) + '.png'
+        for file in _gen_file_paths(self.image_file, ['.png', '.jpg', ''], ['.', 'data/images', 'images']):
             print("trying ",file)
-        if not os.path.isfile(file):
-            raise Exception(f"file {self.image_file} does not exist")
+            if os.path.isfile(file):
+                self.texture = pr.load_texture(file)
+                return
+        raise Exception(f"file {self.image_file} does not exist")
 
-        self.texture = pr.load_texture(file)
+
+
 
 
     def colliderect(self, other):
@@ -463,5 +463,13 @@ class Sprite(Shape):
     def draw(self):
         if not self.loaded:
             self.load_data()
-        print("SCALE ",self.scale)
         pr.draw_texture_ex(self.texture, self.pos, self.rotation_angle, self.scale, self.color)
+
+def _gen_file_paths(name, extensions, folders):
+    paths = []
+    for folder in folders:
+        for ext in extensions:
+            paths.append(folder + os.path.sep + name + ext)
+            paths.append(Globals.data_dir + os.path.sep + folder + os.path.sep + name + ext)
+            paths.append(str(Globals.PATH / folder / name) + ext)
+    return paths

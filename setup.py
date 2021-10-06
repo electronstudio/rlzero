@@ -33,5 +33,5 @@ setup(
     #     ]
     # },
     scripts=['bin/rlzrun'],
-    install_requires=["raylib==3.7.0post3"]
+    install_requires=["raylib==3.7.0post8"]
 )
