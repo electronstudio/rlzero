@@ -1,5 +1,4 @@
 import raylib
-
 from rlzero import *
 
 WIDTH = 500

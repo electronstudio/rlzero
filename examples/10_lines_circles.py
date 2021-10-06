@@ -1,7 +1,7 @@
 from rlzero import *
 
-WIDTH = 500  # What are these units? What if we change them?
-HEIGHT = 500  # What if we delete this line?
+WIDTH = 500
+HEIGHT = 500
 
 def draw():
     clear()

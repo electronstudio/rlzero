@@ -1,13 +1,15 @@
+from rlzero import *
+
 WIDTH = 500
 HEIGHT = 500
 
-alien = Actor("alien")
+alien = Sprite('alien')
 alien.pos = (400, 50)
-box = Rect((20, 20), (100, 100))
+box = screen.Rectangle(20, 20, 100, 100)
 
 def draw():
-    screen.clear()
-    screen.draw.filled_rect(box, "red")
+    clear()
+    screen.draw_rectangle_rec(box, RED)
     alien.draw()
 
 def update():
@@ -20,4 +22,7 @@ def update():
         box.x = 0
     if alien.colliderect(box):
         print("hit")
+
+
+run()
 

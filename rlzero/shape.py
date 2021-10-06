@@ -449,15 +449,18 @@ class Sprite(Shape):
 
 
 
-
-
+    # FIXME should we rename to check_collide?
+    # FIXME Rectangle doesnt have equivalent method cos its not a Python class, can we patch it?
     def colliderect(self, other):
         if not self.loaded:
             self.load_data()
-        if not other.loaded:
-            other.load_data()
         r1 = pr.Rectangle(self.x, self.y, self.texture.width*self.scale, self.texture.height*self.scale)
-        r2 = pr.Rectangle(other.x, other.y, other.texture.width*other.scale, other.texture.height*other.scale)
+        if isinstance(other, Sprite):
+            if not other.loaded:
+                other.load_data()
+            r2 = pr.Rectangle(other.x, other.y, other.texture.width*other.scale, other.texture.height*other.scale)
+        else:  # assume other is: <class '_cffi_backend.__CDataOwn'> cdata 'struct Rectangle'
+            r2 = other
         return pr.check_collision_recs(r1, r2)
 
     def draw(self):
