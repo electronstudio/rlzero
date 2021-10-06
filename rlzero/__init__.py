@@ -3,17 +3,16 @@
 __version__ = '0.1'
 
 from raylib import ffi, rl
-# from ..dynamic import ffi, raylib as rl
 from raylib.colors import *
 from .util import *
 
+import builtins
 import sys
 import os
 import rlzero.rlights as Lights
 import rlzero.globals as Globals
 from .shape import *
 from .sound import *
-#import rlzero.keyboard as Keyboard
 from .keyboard import Keyboard
 from .mouse import Mouse
 from .gamepad import Gamepad
@@ -32,6 +31,18 @@ camera.projection = rl.CAMERA_PERSPECTIVE
 Globals.camera = camera
 
 # mod = sys.modules['__main__']
+current_module = __import__(__name__)
+#setattr(current_module, 'draw_pixel', pyray.draw_pixel)
+#draw_pixel = pyray.draw_pixel
+
+method_list = [func for func in dir(pyray) if callable(getattr(pyray, func))
+               and not func.startswith("__") # and not func[0].isupper()
+               ]
+for m in method_list:
+    #print(str(m))
+    #setattr(builtins, m, getattr(pyray, m))
+    if not hasattr(current_module, m):
+        setattr(current_module, m, getattr(pyray, m))
 
 
 def clear(color=BLACK):
@@ -149,3 +160,4 @@ gamepad1 = Gamepad(1)
 """Second Gamepad object"""
 
 _pre_setup()
+

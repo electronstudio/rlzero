@@ -2,6 +2,8 @@ from raylib import ffi, rl
 import rlzero.globals as Globals
 import os
 
+from .common import _gen_file_paths
+
 
 class Sound:
     """
@@ -21,14 +23,18 @@ class Sound:
         Will be called automatically the first time the sound is played.
         """
         self.loaded = True
-        file = Globals.data_dir + os.path.sep + 'sounds' + os.path.sep + self.file + '.wav'
-        if not os.path.isfile(file):
-            file = str(Globals.PATH / 'sounds' / self.file) + '.wav'
-        if not os.path.isfile(file):
-            raise Exception(f"file {self.file} does not exist")
-        self.sound = rl.LoadSound(file.encode('utf-8'))
-        rl.SetSoundVolume(self.sound, self._volume)
-        rl.SetSoundPitch(self.sound, self._pitch)
+
+        for file in _gen_file_paths(self.file, ['.wav', ''], ['.', 'data/sounds', 'sounds']):
+            print("trying ",file)
+            if os.path.isfile(file):
+                self.sound = rl.LoadSound(file.encode('utf-8'))
+                rl.SetSoundVolume(self.sound, self._volume)
+                rl.SetSoundPitch(self.sound, self._pitch)
+                return
+        raise Exception(f"file {self.file} does not exist")
+
+
+
 
     def play(self):
         """

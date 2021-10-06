@@ -75,3 +75,4 @@ class Color(list):
     @a.setter
     def a(self, value):
         self[3] = value
+

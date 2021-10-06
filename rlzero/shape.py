@@ -1,4 +1,6 @@
 from raylib import ffi, rl
+
+from .common import _gen_file_paths
 from .util import *
 import rlzero.globals as Globals
 import os
@@ -468,11 +470,20 @@ class Sprite(Shape):
             self.load_data()
         pr.draw_texture_ex(self.texture, self.pos, self.rotation_angle, self.scale, self.color)
 
-def _gen_file_paths(name, extensions, folders):
-    paths = []
-    for folder in folders:
-        for ext in extensions:
-            paths.append(folder + os.path.sep + name + ext)
-            paths.append(Globals.data_dir + os.path.sep + folder + os.path.sep + name + ext)
-            paths.append(str(Globals.PATH / folder / name) + ext)
-    return paths
+class Animation:
+    def __init__(self, files):
+        self.files = files
+        self.textures = [None] * len(files)
+
+    def get_texture(self, i):
+        if self.textures[i]:
+            return self.textures[i]
+        else:
+            for file in _gen_file_paths(self.files[i], ['.png', '.jpg', ''], ['.', 'data/images', 'images']):
+                print("trying ",file)
+                if os.path.isfile(file):
+                    self.textures[i] = pr.load_texture(file)
+                    return self.textures[i]
+            raise Exception(f"file {self.files[i]} does not exist")
+
+

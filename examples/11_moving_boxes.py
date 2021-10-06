@@ -1,15 +1,14 @@
-import raylib
 from rlzero import *
 
 WIDTH = 500
 HEIGHT = 500
 
-box = screen.Rectangle(20, 20, 50, 50)
+box = Rectangle(20, 20, 50, 50)
 
 
 def draw():
     clear()
-    screen.draw_rectangle_rec(box, RED)
+    draw_rectangle_rec(box, RED)
 
 def update():
     box.x = box.x + 2

@@ -1,15 +1,17 @@
-WIDTH = 500
-HEIGHT = 500
+from rlzero import *
 import random
 
-alien = Actor("alien")
+WIDTH = 500
+HEIGHT = 500
+
+alien = Sprite("alien")
 alien.pos = (400, 50)
-box = Rect((20, 20), (100, 100))
+box = Rectangle(20, 20, 100, 100)
 score = 0
 
 def draw():
-    screen.clear()
-    screen.draw.filled_rect(box, "green")
+    clear()
+    draw_rectangle_rec(box, GREEN)
     alien.draw()
 
 def update():
@@ -24,3 +26,4 @@ def update():
         score = score + 1
         print("Score:", score)
 
+run()

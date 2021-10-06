@@ -6,6 +6,6 @@ HEIGHT = 500  # What if we delete this line?
 
 def draw():
     clear()
-    screen.draw_pixel(250, 250, RED)
+    draw_pixel(250, 250, RED)
 
 run()
