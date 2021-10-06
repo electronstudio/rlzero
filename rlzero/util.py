@@ -1,6 +1,10 @@
-from raylib.colors import *
+from .common import find_file
+from raylib.pyray import PyRay
+pr = PyRay()
 
-
+def Texture(file):
+    texture = pr.load_texture(find_file(file, ['.png', '.jpg', ''], ['.', 'data/images', 'images']))
+    return texture
 
 class Vector(list):
     @property

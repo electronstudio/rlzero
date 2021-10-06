@@ -1,11 +1,15 @@
-alien = Actor("alien")
+from rlzero import *
+
+alien = Sprite("alien")
 alien.pos = (0, 50)
+eep = Sound("eep")
+
 score = 0
 
 def draw():
-    screen.clear()
+    clear()
     alien.draw()
-    screen.draw.text("Score "+str(score), (0,0))
+    draw_text("Score "+str(score), 0, 0, 20, WHITE)
 
 def update():
     if keyboard.right:
@@ -16,9 +20,10 @@ def update():
 
 def on_mouse_down(pos, button):
     global score
-    if button == mouse.LEFT and alien.collidepoint(pos):
+    if button == pyray.MOUSE_LEFT_BUTTON and alien.collidepoint(pos):
         alien.image = 'alien_hurt'
-        sounds.eep.play()
+        eep.play()
         score = score + 1
 
+run()
 

@@ -1,6 +1,6 @@
 from raylib import ffi, rl
-
-from .common import _gen_file_paths
+from raylib.colors import *
+from .common import _gen_file_paths, find_file
 from .util import *
 import rlzero.globals as Globals
 import os
@@ -442,12 +442,9 @@ class Sprite(Shape):
 
     def load_data(self):
         self.loaded = True
-        for file in _gen_file_paths(self.image_file, ['.png', '.jpg', ''], ['.', 'data/images', 'images']):
-            print("trying ",file)
-            if os.path.isfile(file):
-                self.texture = pr.load_texture(file)
-                return
-        raise Exception(f"file {self.image_file} does not exist")
+        file = find_file(self.image_file, ['.png', '.jpg', ''], ['.', 'data/images', 'images'])
+        self.texture = pr.load_texture(file)
+
 
 
 
@@ -465,25 +462,38 @@ class Sprite(Shape):
             r2 = other
         return pr.check_collision_recs(r1, r2)
 
+    def collidepoint(self, point):
+        r1 = pr.Rectangle(self.x, self.y, self.texture.width*self.scale, self.texture.height*self.scale)
+        return pr.check_collision_point_rec(point, r1)
+
     def draw(self):
         if not self.loaded:
             self.load_data()
         pr.draw_texture_ex(self.texture, self.pos, self.rotation_angle, self.scale, self.color)
 
 class Animation:
-    def __init__(self, files):
+    def __init__(self, files, fps=25):
         self.files = files
         self.textures = [None] * len(files)
+        self.frame = 0
+        self.interval = 1.0/float(fps)
+        self.time = 0.0
 
     def get_texture(self, i):
+        i = i % len(self.textures)-1
         if self.textures[i]:
             return self.textures[i]
         else:
-            for file in _gen_file_paths(self.files[i], ['.png', '.jpg', ''], ['.', 'data/images', 'images']):
-                print("trying ",file)
-                if os.path.isfile(file):
-                    self.textures[i] = pr.load_texture(file)
-                    return self.textures[i]
-            raise Exception(f"file {self.files[i]} does not exist")
+            file = find_file(self.files[i], ['.png', '.jpg', ''], ['.', 'data/images', 'images'])
+            self.textures[i] = pr.load_texture(file)
+            return self.textures[i]
+
+    def update(self, sprite):
+        self.time += pr.get_frame_time()
+        if self.time >= self.interval:
+            self.frame += 1
+            self.time -= self.interval
+
+        sprite.texture = self.get_texture(self.frame)
 
 

@@ -1,11 +1,14 @@
+from rlzero import *
+
 # wiggle your mouse around the screen!
 
-alien = Actor("alien")
+alien = Sprite("alien")
 
 def draw():
-    screen.clear()
+    clear()
     alien.draw()
 
 def on_mouse_move(pos):
     alien.pos = pos
 
+run()

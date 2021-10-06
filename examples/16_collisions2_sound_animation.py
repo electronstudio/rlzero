@@ -3,7 +3,8 @@ from rlzero import *
 WIDTH = 500
 HEIGHT = 500
 alien = Sprite("alien")
-animation = Animation(["alien", "alien_hurt"])
+tex1 = Texture("alien")
+tex2 = Texture("alien_hurt")
 alien.pos = (0, 50)
 box = Rectangle(20, 20, 100, 100)
 eep = Sound("eep")
@@ -22,9 +23,9 @@ def update():
         box.x = 0
 # PLAY SOUND AND SHOW IMAGE WHEN HIT
     if alien.colliderect(box):
-        alien.texture = animation.get_texture(1)
+        alien.texture = tex2
         eep.play()
     else:
-        alien.texture = animation.get_texture(0)
+        alien.texture = tex1
 
 run()

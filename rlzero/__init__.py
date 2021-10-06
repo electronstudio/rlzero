@@ -102,6 +102,7 @@ def _setup():
     if hasattr(mod, "init"):
         mod.init()
 
+old_mouse_pos=(0,0)
 
 def _main_loop():
     #print(mod)
@@ -110,6 +111,21 @@ def _main_loop():
             mod.update(rl.GetFrameTime())
         else:
             mod.update()
+    pos = (pr.get_mouse_x(), pr.get_mouse_y())
+    if hasattr(mod, "on_mouse_move"):
+        global old_mouse_pos
+        if not pos == old_mouse_pos:
+            old_mouse_pos = pos
+            mod.on_mouse_move(pos)
+
+    if hasattr(mod, "on_mouse_down"):
+        if pr.is_mouse_button_pressed(0):
+            mod.on_mouse_down(pos, 0)
+        if pr.is_mouse_button_pressed(1):
+            mod.on_mouse_down(pos, 1)
+        if pr.is_mouse_button_pressed(2):
+            mod.on_mouse_down(pos, 2)
+
     rl.UpdateCamera(camera)
     Globals.light_system.update(camera.position)
     if rl.IsKeyPressed(rl.KEY_F):
