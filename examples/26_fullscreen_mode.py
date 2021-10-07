@@ -1,16 +1,18 @@
-import pygame
+from rlzero import *
 
 WIDTH = 500
 HEIGHT = 500
 
-alien = Actor("alien")
+alien = Sprite("alien")
 
 def draw():
-    screen.clear()
+    clear()
     alien.draw()
 
 def update():
-    if keyboard.f:
-        pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
-    if keyboard.escape:
+    if keyboard.f1:
+        toggle_fullscreen()
+    if keyboard.enter:
         exit()
+
+run()

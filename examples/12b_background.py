@@ -3,7 +3,7 @@ from rlzero import *
 WIDTH = 500
 HEIGHT = 500
 
-alien = Sprite('alien.png')
+alien = Sprite('alien')
 alien.x = 0
 alien.y = 50
 

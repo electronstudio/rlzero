@@ -1,8 +1,7 @@
 """ RL Zero, simple access to Raylib
 """
-__version__ = '0.1'
 
-from raylib import ffi, rl
+from raylib import *
 from raylib.colors import *
 from .util import *
 
@@ -11,15 +10,16 @@ import sys
 import os
 import rlzero.rlights as Lights
 import rlzero.globals as Globals
+from .Sprite import Sprite
 from .shape import *
-from .sound import *
-from .keyboard import Keyboard
-from .mouse import Mouse
-from .gamepad import Gamepad
+from .Sound import *
+from .Keyboard import Keyboard
+from .Mouse import Mouse
+from .Gamepad import Gamepad
 from raylib.pyray import PyRay
 
-pyray = PyRay()
-screen = pyray
+pr = PyRay()
+
 
 camera = ffi.new("struct Camera3D *")
 camera.position = (0.0, 100, 100)
@@ -35,14 +35,14 @@ current_module = __import__(__name__)
 #setattr(current_module, 'draw_pixel', pyray.draw_pixel)
 #draw_pixel = pyray.draw_pixel
 
-method_list = [func for func in dir(pyray) if callable(getattr(pyray, func))
-               and not func.startswith("__") # and not func[0].isupper()
+method_list = [func for func in dir(pr) if callable(getattr(pr, func))
+               and not func.startswith("__")  # and not func[0].isupper()
                ]
 for m in method_list:
     #print(str(m))
     #setattr(builtins, m, getattr(pyray, m))
     if not hasattr(current_module, m):
-        setattr(current_module, m, getattr(pyray, m))
+        setattr(current_module, m, getattr(pr, m))
 
 
 def clear(color=BLACK):
@@ -89,7 +89,7 @@ def _setup():
     if hasattr(mod, "TITLE"):
         title = mod.TITLE
 
-    pyray.set_window_size(screen_width, screen_height, title)
+    pr.set_window_size(screen_width, screen_height, title)
 
     if hasattr(mod, "DATA_DIR"):
         #global data_dir
@@ -104,13 +104,7 @@ def _setup():
 
 old_mouse_pos=(0,0)
 
-def _main_loop():
-    #print(mod)
-    if hasattr(mod, "update"):
-        if (mod.update.__code__.co_argcount > 0):
-            mod.update(rl.GetFrameTime())
-        else:
-            mod.update()
+def _call_backs():
     pos = (pr.get_mouse_x(), pr.get_mouse_y())
     if hasattr(mod, "on_mouse_move"):
         global old_mouse_pos
@@ -119,14 +113,41 @@ def _main_loop():
             mod.on_mouse_move(pos)
 
     if hasattr(mod, "on_mouse_down"):
-        if pr.is_mouse_button_pressed(0):
-            mod.on_mouse_down(pos, 0)
-        if pr.is_mouse_button_pressed(1):
-            mod.on_mouse_down(pos, 1)
-        if pr.is_mouse_button_pressed(2):
-            mod.on_mouse_down(pos, 2)
+        for i in range(10):
+            if pr.is_mouse_button_down(i):
+                mod.on_mouse_down(pos, i)
 
-    rl.UpdateCamera(camera)
+    if hasattr(mod, "on_mouse_up"):
+        for i in range(10):
+            if pr.is_mouse_button_up(i):
+                mod.on_mouse_up(pos, i)
+
+    if hasattr(mod, "on_mouse_pressed"):
+        for i in range(10):
+            if pr.is_mouse_button_pressed(i):
+                mod.on_mouse_pressed(pos, i)
+
+    if hasattr(mod, "on_mouse_released"):
+        for i in range(10):
+            if pr.is_mouse_button_released(i):
+                mod.on_mouse_released(pos, i)
+
+    if hasattr(mod, "on_key_pressed"):
+        key = get_key_pressed()
+        if key != 0:
+            mod.on_key_pressed(key)
+
+def _main_loop():
+
+    if hasattr(mod, "update"):
+        if (mod.update.__code__.co_argcount > 0):
+            mod.update(rl.GetFrameTime())
+        else:
+            mod.update()
+
+    _call_backs()
+
+    UpdateCamera(camera)
     Globals.light_system.update(camera.position)
     if rl.IsKeyPressed(rl.KEY_F):
         rl.ToggleFullscreen()
@@ -136,7 +157,7 @@ def _main_loop():
     if hasattr(mod, "draw2dbackground"):
         mod.draw2dbackground()
     rl.BeginMode3D(camera[0])
-    pyray.draw_grid(100, 10)
+    pr.draw_grid(100, 10)
     if hasattr(mod, "draw3d"):
         mod.draw3d()
         Globals.light_system.draw()
@@ -152,10 +173,10 @@ def run(m=sys.modules['__main__']):
     global mod
     mod = m
     _setup()
-    while not rl.WindowShouldClose():
+    while not WindowShouldClose():
         _main_loop()
 
-    rl.CloseWindow()
+    CloseWindow()
 
 
 

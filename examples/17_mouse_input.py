@@ -20,7 +20,7 @@ def update():
 
 def on_mouse_down(pos, button):
     global score
-    if button == pyray.MOUSE_LEFT_BUTTON and alien.collidepoint(pos):
+    if button == MOUSE_MIDDLE_BUTTON and alien.collidepoint(pos):
         alien.image = 'alien_hurt'
         eep.play()
         score = score + 1

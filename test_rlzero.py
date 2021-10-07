@@ -108,7 +108,7 @@ def draw3d():
 
 def draw2d():
     screen.draw_text("Move player with cursors to collide", 220, 40, 20, (255,0,0,255))
-    pyray.draw_fps(20,20)
+    pr.draw_fps(20, 20)
 
 
 
