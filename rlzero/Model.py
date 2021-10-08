@@ -190,10 +190,10 @@ class Cube(Model):
     Model with cube shaped mesh generated rather than loaded from file.
     """
 
-    def __init__(self, position=(0, 0, 0), scale=(10, 10, 10), color=WHITE, wires=False,
+    def __init__(self, pos=(0, 0, 0), scale=(10, 10, 10), color=WHITE, wires=False,
                  wire_color=DARKGRAY,
                  rotation_axis=Vector([0, 1, 0]), rotation_angle=0):
-        super().__init__(model_file="", position=position, rotation_axis=rotation_axis,
+        super().__init__(model_file="", pos=pos, rotation_axis=rotation_axis,
                          rotation_angle=rotation_angle,
                          scale=scale, color=color, wires=wires, wire_color=wire_color)
         self.loaded = False

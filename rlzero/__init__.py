@@ -13,6 +13,7 @@ import rlzero.globals as Globals
 from .Sprite import Sprite
 from .shape import *
 from .Sound import *
+from .Model import *
 from .Keyboard import Keyboard
 from .Mouse import Mouse
 from .Gamepad import Gamepad
