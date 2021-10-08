@@ -1,3 +1,4 @@
+from rlzero import *
 
 timer = 0
 
@@ -7,7 +8,9 @@ def update(dt):
 
 
 def draw():
-    screen.clear()
-    screen.draw.text(f"Time passed: {timer}", (0, 0))
+    clear()
+    draw_text(f"Time passed: {timer}", 0, 0, 20, RED)
     if timer > 5:
-        screen.draw.textbox("Time's up!", Rect(50, 50, 200, 200))
+        draw_text("Time's up!", 50, 50, 40, WHITE)
+
+run()

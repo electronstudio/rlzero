@@ -1,10 +1,8 @@
 from raylib.colors import WHITE
-from raylib.pyray import PyRay
+import pyray as pr
 
 from .common import find_file
 from .shape import Shape
-
-pr = PyRay()
 
 class Sprite(Shape):
     """
@@ -78,3 +76,4 @@ class Sprite(Shape):
         if not self.loaded:
             self.load_data()
         pr.draw_texture_ex(self.texture, self.pos, self.rotation_angle, self.scale, self.color)
+

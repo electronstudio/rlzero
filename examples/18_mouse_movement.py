@@ -2,13 +2,13 @@ from rlzero import *
 
 # wiggle your mouse around the screen!
 
-alien = Sprite("alien")
+alan = Sprite("alien.png")
 
 def draw():
     clear()
-    alien.draw()
+    alan.draw()
 
 def on_mouse_move(pos):
-    alien.pos = pos
+    alan.pos = pos
 
 run()

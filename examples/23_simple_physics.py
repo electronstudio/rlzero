@@ -1,19 +1,23 @@
+from rlzero import *
+
 WIDTH = 500
 HEIGHT = 500
 
-ball = Rect((200, 400), (20, 20))
+ball = Rectangle(200, 400, 20, 20)
 vx = 1
 vy = 1
 
 def draw():
-    screen.clear()
-    screen.draw.filled_rect(ball, "red")
+    clear()
+    draw_rectangle_rec(ball, RED)
 
 def update():
     global vx, vy
     ball.x += vx
     ball.y += vy
-    if ball.right > WIDTH or ball.left < 0:
+    if ball.x > WIDTH or ball.x < 0:
         vx = -vx
-    if ball.bottom > HEIGHT or ball.top < 0:
+    if ball.y > HEIGHT or ball.y < 0:
         vy = -vy
+
+run()

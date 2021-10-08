@@ -4,23 +4,23 @@ import random
 WIDTH = 500
 HEIGHT = 500
 
-alien = Sprite("alien")
-alien.pos = (400, 50)
+alan = Sprite("alien.png")
+alan.pos = (400, 50)
 box = Rectangle(20, 20, 100, 100)
 score = 0
 
 def draw():
     clear()
     draw_rectangle_rec(box, GREEN)
-    alien.draw()
+    alan.draw()
 
 def update():
     global score
     if keyboard.right:
-        alien.x = alien.x + 2
+        alan.x = alan.x + 2
     elif keyboard.left:
-        alien.x = alien.x - 2
-    if alien.colliderect(box):
+        alan.x = alan.x - 2
+    if alan.colliderect(box):
         box.x = random.randint(0, WIDTH)
         box.y = random.randint(0, HEIGHT)
         score = score + 1

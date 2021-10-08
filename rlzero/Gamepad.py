@@ -1,7 +1,6 @@
 from .util import *
-from raylib.pyray import PyRay
+import pyray
 from raylib import ffi, rl
-pyray = PyRay()
 
 
 class Gamepad:

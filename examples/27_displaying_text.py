@@ -7,7 +7,7 @@ score = 0
 
 def draw():
     clear()
-    pr.draw_text(f"Player 1 score: {score}", 0, 0, 20, RED)
+    draw_text(f"Player 1 score: {score}", 0, 0, 20, RED)
 
 # This is another special function that is called by RLzero automatically
 # each time a key is pressed. That way player cannot just hold down the key!

@@ -4,18 +4,15 @@ from .common import _gen_file_paths, find_file
 from .util import *
 import rlzero.globals as Globals
 import os
-
-from raylib.pyray import PyRay
-pr = PyRay()
+import pyray as pr
 
 
 from raylib.colors import WHITE
-from raylib.pyray import PyRay
+
 
 from .common import find_file
 from .shape import Shape
 
-pr = PyRay()
 
 
 class Model(Shape):

@@ -1,9 +1,8 @@
 from raylib import *
-from raylib.pyray import PyRay
+import pyray as screen
 from .util import *
 import pathlib
 PATH = pathlib.Path(__file__).parent
-screen = PyRay()
 
 LIGHT_DIRECTIONAL=0
 LIGHT_POINT=1

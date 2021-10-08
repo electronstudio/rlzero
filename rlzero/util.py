@@ -1,6 +1,5 @@
 from .common import find_file
-from raylib.pyray import PyRay
-pr = PyRay()
+import pyray as pr
 
 def Texture(file):
     texture = pr.load_texture(find_file(file, ['.png', '.jpg', ''], ['.', 'data/images', 'images']))

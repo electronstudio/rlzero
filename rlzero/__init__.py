@@ -17,9 +17,9 @@ from .Keyboard import Keyboard
 from .Mouse import Mouse
 from .Gamepad import Gamepad
 from .Animation import Animation
-from raylib.pyray import PyRay
 
-pr = PyRay()
+
+import pyray as pr
 
 
 camera = ffi.new("struct Camera3D *")

@@ -1,8 +1,5 @@
-from raylib.pyray import PyRay
+import pyray as pr
 from .common import find_file
-
-
-pr = PyRay()
 
 
 class Animation:

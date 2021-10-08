@@ -3,22 +3,22 @@ from rlzero import *
 WIDTH = 500
 HEIGHT = 500
 
-alien = Sprite('alien')
-alien.x = 0
-alien.y = 50
+alan = Sprite('alien.png')
+alan.x = 0
+alan.y = 50
 
-background = Sprite('background')
+background = Sprite('background.png')
 
 def draw():
     clear()
     background.draw()
-    alien.draw()
+    alan.draw()
 
 
 def update():
-    alien.x += 2
-    if alien.x > WIDTH:
-        alien.x = 0
+    alan.x += 2
+    if alan.x > WIDTH:
+        alan.x = 0
 
 run()
 

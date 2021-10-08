@@ -1,7 +1,5 @@
-from raylib.pyray import PyRay
+import pyray as rl
 
-
-rl = PyRay()
 
 WIDTH = 1920
 HEIGHT = 1080

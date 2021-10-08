@@ -1,9 +1,7 @@
-from raylib.pyray import PyRay
+import pyray as pr
 from raylib import *
 # from math import log, log2
 import threading
-
-rl = PyRay()
 
 WIDTH = 1920
 HEIGHT = 1080

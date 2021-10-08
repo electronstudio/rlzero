@@ -1,8 +1,7 @@
-from .util import *
-from raylib.pyray import PyRay
+import pyray
 from raylib import ffi, rl
 import rlzero.globals as Globals
-pyray = PyRay()
+
 
 class Mouse:
     """

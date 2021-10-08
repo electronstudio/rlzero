@@ -1,28 +1,33 @@
+from rlzero import *
+
 WIDTH = 500
 HEIGHT = 500
 
-ball = Rect((150, 400), (20, 20))
-bat = Rect((200, 480), (60, 20))
+ball = Rectangle(150, 400, 20, 20)
+bat = Rectangle(200, 480, 60, 20)
 vx = 4
 vy = 4
 
 def draw():
-    screen.clear()
-    screen.draw.filled_rect(ball, "red")
-    screen.draw.filled_rect(bat, "white")
+    clear()
+    draw_rectangle_rec(ball, RED)
+    draw_rectangle_rec(bat, WHITE)
 
 def update():
     global vx, vy
     ball.x += vx
     ball.y += vy
-    if ball.right > WIDTH or ball.left < 0:
+    if ball.x > WIDTH or ball.x < 0:
         vx = -vx
-    if ball.colliderect(bat) or ball.top < 0:
+
+    if check_collision_recs(bat, ball) or ball.y < 0:
         vy = -vy
-    if ball.bottom > HEIGHT:
+    if ball.y > HEIGHT:
         exit()
     if(keyboard.right):
         bat.x += 2
     elif(keyboard.left):
         bat.x -= 2
+
+run()
 

@@ -3,25 +3,25 @@ from rlzero import *
 WIDTH = 500
 HEIGHT = 500
 
-alien = Sprite("alien")
-alien.pos = (400, 50)
+alan = Sprite("alien.png")
+alan.pos = (400, 50)
 box = Rectangle(20, 20, 100, 100)
 
 def draw():
     clear()
     draw_rectangle_rec(box, RED)
-    alien.draw()
+    alan.draw()
 
 def update():
     if keyboard.right:
-        alien.x = alien.x + 2
+        alan.x = alan.x + 2
     elif keyboard.left:
-        alien.x = alien.x - 2
-    if box.x < alien.x:
+        alan.x = alan.x - 2
+    if box.x < alan.x:
         box.x = box.x + 1
-    if box.x > alien.x:
+    if box.x > alan.x:
         box.x = box.x - 1
-    if alien.colliderect(box):
+    if alan.colliderect(box):
         exit()
 
 run()

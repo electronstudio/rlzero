@@ -5,8 +5,7 @@ from .util import *
 import rlzero.globals as Globals
 import os
 
-from raylib.pyray import PyRay
-pr = PyRay()
+import pyray as pr
 
 
 class Shape:

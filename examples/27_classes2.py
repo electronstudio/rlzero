@@ -1,23 +1,27 @@
+from rlzero import *
+
 WIDTH = 500
 HEIGHT = 500
 
-class Sprite(Actor):
+class MySprite(Sprite):
     vx = 1
     vy = 1
 
     def update(self):
         self.x += self.vx
         self.y += self.vy
-        if self.right > WIDTH or self.left < 0:
+        if self.x > WIDTH or self.x < 0:
             self.vx = -self.vx
-        if self.bottom > HEIGHT or self.top < 0:
+        if self.y > HEIGHT or self.y < 0:
             self.vy = -self.vy
 
-ball = Sprite("alien")
+ball = MySprite("alien.png")
 
 def draw():
-    screen.clear()
+    clear()
     ball.draw()
 
 def update():
     ball.update()
+
+run()
