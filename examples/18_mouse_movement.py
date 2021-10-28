@@ -5,7 +5,6 @@ from rlzero import *
 alan = Sprite("alien.png")
 
 def draw():
-    clear()
     alan.draw()
 
 def on_mouse_move(pos):

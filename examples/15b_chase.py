@@ -8,7 +8,6 @@ alan.pos = (400, 50)
 box = Rectangle(20, 20, 100, 100)
 
 def draw():
-    clear()
     draw_rectangle_rec(box, RED)
     alan.draw()
 

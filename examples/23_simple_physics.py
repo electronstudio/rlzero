@@ -8,7 +8,6 @@ vx = 1
 vy = 1
 
 def draw():
-    clear()
     draw_rectangle_rec(ball, RED)
 
 def update():

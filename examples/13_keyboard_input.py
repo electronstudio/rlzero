@@ -4,7 +4,6 @@ alan = Sprite('alien.png')
 alan.pos = (0, 50)
 
 def draw():
-    clear()
     alan.draw()
 
 def update():

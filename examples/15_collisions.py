@@ -8,7 +8,6 @@ alan.pos = (400, 50)
 box = screen.Rectangle(20, 20, 100, 100)
 
 def draw():
-    clear()
     screen.draw_rectangle_rec(box, RED)
     alan.draw()
 

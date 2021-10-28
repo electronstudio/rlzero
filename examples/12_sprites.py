@@ -9,12 +9,11 @@ alan.y = 100
 
 
 def draw():
-    clear()
     alan.draw()
 
 
 def update():
-    alan.x += 0
+    alan.x += 1
     if alan.x > WIDTH:
         alan.x = 0
 

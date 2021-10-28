@@ -2,8 +2,8 @@ from rlzero import *
 
 WIDTH = 500
 HEIGHT = 500
-alien = Sprite("alien")
-animation = Animation(["alien","alien_hurt"], 5)
+alien = Sprite("alien.png")
+animation = Animation(["alien.png","alien_hurt.png"], 5)
 alien.pos = (0, 50)
 
 

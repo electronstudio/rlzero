@@ -9,7 +9,6 @@ vx = 4
 vy = 4
 
 def draw():
-    clear()
     draw_rectangle_rec(ball, RED)
     draw_rectangle_rec(bat, WHITE)
 
@@ -19,7 +18,6 @@ def update():
     ball.y += vy
     if ball.x > WIDTH or ball.x < 0:
         vx = -vx
-
     if check_collision_recs(bat, ball) or ball.y < 0:
         vy = -vy
     if ball.y > HEIGHT:

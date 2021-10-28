@@ -10,7 +10,6 @@ alan.y = 50
 background = Sprite('background.png')
 
 def draw():
-    clear()
     background.draw()
     alan.draw()
 

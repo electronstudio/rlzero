@@ -10,7 +10,6 @@ box = Rectangle(20, 20, 100, 100)
 score = 0
 
 def draw():
-    clear()
     draw_rectangle_rec(box, GREEN)
     alan.draw()
 

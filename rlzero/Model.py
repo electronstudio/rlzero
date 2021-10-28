@@ -1,10 +1,10 @@
-from raylib import ffi, rl
+import raylib as rl
 from raylib.colors import *
 from .common import _gen_file_paths, find_file
 from .util import *
 import rlzero.globals as Globals
 import os
-import pyray as pr
+
 
 
 from raylib.colors import WHITE
@@ -12,7 +12,6 @@ from raylib.colors import WHITE
 
 from .common import find_file
 from .shape import Shape
-
 
 
 class Model(Shape):

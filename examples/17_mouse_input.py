@@ -7,7 +7,6 @@ eep = Sound("eep")
 score = 0
 
 def draw():
-    clear()
     alan.draw()
     draw_text("Score "+str(score), 0, 0, 20, WHITE)
 

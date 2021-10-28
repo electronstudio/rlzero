@@ -7,7 +7,6 @@ box = Rectangle(20, 20, 50, 50)
 
 
 def draw():
-    clear()
     draw_rectangle_rec(box, RED)
 
 def update():

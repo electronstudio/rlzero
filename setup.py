@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="rlzero",
-    version="0.2.0",
+    version="0.3.0",
     description="Pygame Zero like API to teach 3d games programming based on Raylib",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -24,6 +24,7 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
     ],
     packages=["rlzero"],
     include_package_data=True,
@@ -33,5 +34,5 @@ setup(
     #     ]
     # },
     scripts=['bin/rlzrun'],
-    install_requires=["raylib>=3.7.0post9<4.0"]
+    install_requires=["raylib>=3.7.0post10"]
 )

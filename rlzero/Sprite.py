@@ -20,6 +20,18 @@ class Sprite(Shape):
     def scale(self, value):
         self._scale = value
 
+    @property
+    def image_file(self):
+        return self._image_file
+
+    @image_file.setter
+    def image_file(self, value):
+        if self.texture:
+            pr.unload_texture(self.texture)
+        self._image_file = value
+        self.texture = self.load_texture(value)
+        self.loaded = True
+
     def __init__(self, image_file, pos=(0, 0), collision_radius=0,
                  rotation_angle=0, scale=1.0, color=WHITE):
         """
@@ -35,6 +47,7 @@ class Sprite(Shape):
 
         self.pos = pos
         self.color = color
+        self.texture = None
 
 
         self.image_file = image_file
@@ -44,14 +57,13 @@ class Sprite(Shape):
         self.rotation_angle = rotation_angle
         self.collision_radius = collision_radius
 
-        self.loaded = False
-
     def load_data(self):
         self.loaded = True
-        file = find_file(self.image_file, ['.png', '.jpg', ''], ['.', 'data/images', 'images'])
-        self.texture = pr.load_texture(file)
+        self.texture = self.load_texture(self.image_file)
 
-
+    def load_texture(self, file_name):
+        file = find_file(file_name, ['.png', '.jpg', ''], ['.', 'data/images', 'images'])
+        return pr.load_texture(file)
 
 
     # FIXME should we rename to check_collide?

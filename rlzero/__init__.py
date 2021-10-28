@@ -56,6 +56,7 @@ def clear(color=BLACK):
 
 
 
+
 def getLightSystem():
     return globals.light_system
 
@@ -80,7 +81,7 @@ def _pre_setup():
 def _setup():
     screen_width = 800
     screen_height = 640
-    title = "RichLib"
+    title = "RLZero"
 
     if hasattr(mod, "WIDTH"):
         screen_width = mod.WIDTH
@@ -104,40 +105,80 @@ def _setup():
     if hasattr(mod, "init"):
         mod.init()
 
-old_mouse_pos=(0,0)
+_old_mouse_pos=(0, 0)
+
+class _Callback:
+    def __init__(self, method, time, repeat):
+        self.method=method
+        self.time=time
+        self.repeat=repeat
+        self.timer = 0
+        self.done = False
+
+    def do(self):
+        self.timer += rl.GetFrameTime()
+        if self.timer >= self.time:
+            self.method()
+            if self.repeat:
+                self.timer = 0
+            else:
+                self.done = True
+
+_callbacks = []
 
 def _call_backs():
+    global _callbacks
     pos = (pr.get_mouse_x(), pr.get_mouse_y())
     if hasattr(mod, "on_mouse_move"):
-        global old_mouse_pos
-        if not pos == old_mouse_pos:
-            old_mouse_pos = pos
+        global _old_mouse_pos
+        if not pos == _old_mouse_pos:
+            _old_mouse_pos = pos
             mod.on_mouse_move(pos)
 
     if hasattr(mod, "on_mouse_down"):
-        for i in range(10):
+        for i in range(5):
             if pr.is_mouse_button_down(i):
                 mod.on_mouse_down(pos, i)
 
     if hasattr(mod, "on_mouse_up"):
-        for i in range(10):
+        for i in range(5):
             if pr.is_mouse_button_up(i):
                 mod.on_mouse_up(pos, i)
 
     if hasattr(mod, "on_mouse_pressed"):
-        for i in range(10):
+        for i in range(5):
             if pr.is_mouse_button_pressed(i):
                 mod.on_mouse_pressed(pos, i)
 
     if hasattr(mod, "on_mouse_released"):
-        for i in range(10):
+        for i in range(5):
             if pr.is_mouse_button_released(i):
                 mod.on_mouse_released(pos, i)
 
     if hasattr(mod, "on_key_pressed"):
-        key = get_key_pressed()
+        key = pr.get_key_pressed()
         if key != 0:
             mod.on_key_pressed(key)
+
+    for callback in _callbacks:
+        callback.do()
+    _callbacks = list(filter(lambda c: not c.done, _callbacks))
+
+
+
+def schedule_repeat(method, time):
+    global _callbacks
+    _callbacks.append(_Callback(method, time, True))
+
+def schedule_once(method, time):
+    global _callbacks
+    _callbacks.append(_Callback(method, time, False))
+
+def schedule_cancel(method):
+    global _callbacks
+    matches = [x for x in _callbacks if x.method == method]
+    for m in matches:
+        m.done = True
 
 def _main_loop():
 
@@ -156,18 +197,18 @@ def _main_loop():
     if rl.IsKeyPressed(rl.KEY_ESCAPE):
         rl.Exit()
     rl.BeginDrawing()
-    if hasattr(mod, "draw2dbackground"):
-        mod.draw2dbackground()
-    rl.BeginMode3D(camera[0])
-    pr.draw_grid(100, 10)
+    if hasattr(mod, "draw"):
+        rl.ClearBackground(BLACK)
+        mod.draw()
     if hasattr(mod, "draw3d"):
+        rl.BeginMode3D(camera[0])
+        pr.draw_grid(100, 10)
         mod.draw3d()
         Globals.light_system.draw()
-    rl.EndMode3D()
+        rl.EndMode3D()
     if hasattr(mod, "draw2d"):
         mod.draw2d()
-    if hasattr(mod, "draw"):
-        mod.draw()
+
     rl.EndDrawing()
 
 
