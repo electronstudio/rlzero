@@ -14,7 +14,7 @@ from .Sprite import Sprite
 from .shape import *
 from .Sound import *
 from .Model import *
-from .Keyboard import Keyboard
+from .Keyboard import Keyboard, Keys
 from .Mouse import Mouse
 from .Gamepad import Gamepad
 from .Animation import Animation
@@ -63,7 +63,7 @@ def getLightSystem():
 
 def _pre_setup():
     #global lightSystem
-    rl.SetConfigFlags(rl.FLAG_VSYNC_HINT + rl.FLAG_MSAA_4X_HINT)
+    rl.SetConfigFlags(rl.FLAG_VSYNC_HINT) # + rl.FLAG_MSAA_4X_HINT)
 
     rl.InitWindow(1, 1, "title".encode('utf-8'))
     rl.InitAudioDevice()
@@ -230,6 +230,8 @@ mouse = Mouse()
 
 keyboard = Keyboard()
 """Default Keyboard object"""
+
+keys = Keys()
 
 gamepad = Gamepad(0)
 """First Gamepad object"""

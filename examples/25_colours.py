@@ -1,14 +1,15 @@
 from rlzero import *
 
-# my_colour = (0,0,0) # makes black
-# my_colour = (255,255,255) # makes white
+# my_colour = Color(0,0,0,255) # makes black
+# my_colour = Color(255,255,255,255) # makes white
 
 red_amount = 0
 green_amount = 0
 blue_amount = 0
+alpha_amount = 255
 
 def draw():
-    my_colour = (red_amount, green_amount, blue_amount)
+    my_colour = Color(red_amount, green_amount, blue_amount, alpha_amount)
     clear_background(my_colour)
 
 # This function makes the colour change every frame

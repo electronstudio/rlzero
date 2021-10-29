@@ -35,3 +35,9 @@ class Keyboard:
         f = _fix_key(kname)
         return rl.IsKeyPressed(getattr(rl, f))
 
+
+class Keys:
+    def __getattr__(self, kname):
+        k = getattr(rl, _fix_key(kname))
+        print(k)
+        return k

@@ -22,7 +22,7 @@ class Shape:
 
     @color.setter
     def color(self, value):
-        self._color = Color(value)
+        self._color = value
 
     @property
     def pos(self):
