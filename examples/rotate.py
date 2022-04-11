@@ -16,7 +16,11 @@ def update():
         alan.x = alan.x + 2
     elif keyboard.left:
         alan.x = alan.x - 2
-    box.x = box.x + 2
+    if keyboard.up:
+        alan.rotation_angle = alan.rotation_angle + 1
+    elif keyboard.down:
+        alan.rotation_angle = alan.rotation_angle - 1
+    #box.x = box.x + 2
     if box.x > WIDTH:
         box.x = 0
     if alan.colliderect(box):
