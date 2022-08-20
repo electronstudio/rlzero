@@ -1,15 +1,17 @@
+from rlzero import *
+
 WIDTH = 600
 HEIGHT = 600
 
-background = Actor("background")
-player = Actor("player")
+background = Sprite("background")
+player = Sprite("player")
 player.x = 200
 player.y = 200
 
-enemy = Actor("alien")
+enemy = Sprite("alien")
 
 def draw():
-    screen.clear()
+    clear()
     background.draw()
     player.draw()
     enemy.draw()
@@ -45,4 +47,6 @@ def update():
         enemy.y = enemy.y - 1
     if player.colliderect(enemy):
         exit()
+
+run()
 

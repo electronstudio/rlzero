@@ -1,14 +1,16 @@
+from rlzero import *
+
 WIDTH = 600
 HEIGHT = 600
 
-background = Actor("background")
-player = Actor("player")
+background = Sprite("background")
+player = Sprite("player")
 player.x = 200
 player.y = 200
 
 
 def draw():
-    screen.clear()
+    clear()
     background.draw()
     player.draw()
 
@@ -33,5 +35,7 @@ def update():
         player.y = HEIGHT
     if player.y > HEIGHT:
         player.y = 0
+
+run()
 
 

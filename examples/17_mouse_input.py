@@ -19,7 +19,7 @@ def update():
 
 def on_mouse_down(pos, button):
     global score
-    if button == MOUSE_LEFT_BUTTON and alan.collidepoint(pos):
+    if button == MOUSE_BUTTON_LEFT and alan.collidepoint(pos):
         alan.image = 'alien_hurt.png'
         eep.play()
         score = score + 1

@@ -97,20 +97,23 @@ class Sprite(Shape):
             self.load_data()
         cx, cy = self.width/2, self.height/2
         px, py = rotate((cx, cy),(0,0),-self.rotation_angle)
-        print(px, py)
+        #print(px, py)
         x = self.x - px + cx
         y = self.y - py + cy
         pr.draw_texture_ex(self.texture, (x, y), self.rotation_angle, self.scale, self.color)
 
-import numpy as np
+_DEG2RAD=0.01745329251
+
+import math
+
 def rotate(point, origin, degrees):
-    radians = np.deg2rad(degrees)
+    radians = degrees * _DEG2RAD
     x,y = point
     offset_x, offset_y = origin
     adjusted_x = (x - offset_x)
     adjusted_y = (y - offset_y)
-    cos_rad = np.cos(radians)
-    sin_rad = np.sin(radians)
+    cos_rad = math.cos(radians)
+    sin_rad = math.sin(radians)
     qx = offset_x + cos_rad * adjusted_x + sin_rad * adjusted_y
     qy = offset_y + -sin_rad * adjusted_x + cos_rad * adjusted_y
     return qx, qy

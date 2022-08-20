@@ -1,20 +1,24 @@
+from rlzero import *
+
 WIDTH = 600
 HEIGHT = 600
 
-background = Actor("background")
-player = Actor("player")
+background = Sprite("background")
+player = Sprite("player")
 player.x = 200
 player.y = 200
 score = 0
 
-badguy = Actor("badguy")
+badguy = Sprite("badguy")
+
+eep = Sound("eep.wav")
 
 def draw():
-    screen.clear()
+    clear()
     background.draw()
     player.draw()
     badguy.draw()
-    screen.draw.text(f"score: {score}", (0,0), color='red')
+    draw_text(f"score: {score}", 0, 0, 20, RED)
 
 def update():
     global score
@@ -57,6 +61,6 @@ def update():
         badguy.y = 0
 
     if badguy.colliderect(player):
-        sounds.eep.play()
+        eep.play()
 
-
+run()

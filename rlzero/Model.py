@@ -118,7 +118,7 @@ class Model(Shape):
         """
         if not hasattr(self, 'model'):
             return ((0, 0, 0), (0, 0, 0))
-        bb = rl.MeshBoundingBox(self.model.meshes[0])
+        bb = rl.GetMeshBoundingBox(self.model.meshes[0])
 
         bb.min.x *= self.scale.x
         bb.min.y *= self.scale.y

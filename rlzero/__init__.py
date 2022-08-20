@@ -52,7 +52,7 @@ def clear(color=BLACK):
     Clear the screen
     :param Color color:
     """
-    rl.ClearBackground(Color(color))
+    rl.ClearBackground(color)
 
 
 

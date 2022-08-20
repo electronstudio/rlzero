@@ -44,7 +44,7 @@ class Shape:
 
     @wire_color.setter
     def wire_color(self, value):
-        self._wire_color = Color(value)
+        self._wire_color = value
 
     @property
     def x(self):

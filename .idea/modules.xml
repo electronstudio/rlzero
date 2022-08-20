@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/richlib.iml" filepath="$PROJECT_DIR$/.idea/richlib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rlzero/rlzero.iml" filepath="$PROJECT_DIR$/rlzero/rlzero.iml" />
     </modules>
   </component>
 </project>

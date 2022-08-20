@@ -1,22 +1,17 @@
-from rlzero import *
-
 import random
-
+from rlzero import *
 
 WIDTH = 600
 HEIGHT = 600
-DATA_DIR = "."
 
 background = Sprite("background")
 player = Sprite("player")
 player.x = 200
 player.y = 200
-player.rotation_angle = 0
-player.scale = 2
 
 enemy = Sprite("alien")
 player2 = Sprite("player")
-coin = Sprite("alien", pos=(300,300))
+coin = Sprite("coin", pos=(300,300))
 score = 0
 time = 20
 
@@ -28,11 +23,11 @@ def draw2d():
     enemy.draw()
     player2.draw()
     coin.draw()
-    screen.draw_text("My game", 200, 0, 20, RED)
+    draw_text("My game", 200, 0, 20, RED)
     score_string = str(score)
-    screen.draw_text(score_string, 0,0, 20, GREEN)
+    draw_text(score_string, 0,0, 20, GREEN)
     time_string = str(round(time))
-    screen.draw_text(time_string, 50,0, 20, GREEN)
+    draw_text(time_string, 50,0, 20, GREEN)
 
 def update(delta):
     global score, time
