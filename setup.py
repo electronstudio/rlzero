@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="rlzero",
-    version="0.4.1",
+    version="0.4.2",
     description="Pygame Zero like API to teach 3d games programming based on Raylib",
     long_description=README,
     long_description_content_type="text/markdown",
