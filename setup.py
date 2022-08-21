@@ -34,5 +34,5 @@ setup(
     #     ]
     # },
     scripts=['bin/rlzrun'],
-    install_requires=["raylib>=4.0.0.6<4.1"]
+    install_requires=["raylib==4.2.1.0"]
 )

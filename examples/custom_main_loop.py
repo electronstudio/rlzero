@@ -4,26 +4,26 @@
 """
 from rlzero import *
 
-cube = Cube((0, 10, 0), (10, 20, 10), 'blue')
-pyray.set_window_size(800, 500, "title")
-camera = pyray.Camera3D([18.0, 16.0, 18.0], [0.0, 0.0, 0.0], [0.0, 1.0, 0.0], 45.0, 0)
-pyray.set_camera_mode(camera, pyray.CAMERA_FIRST_PERSON)
+cube = Cube((0, 10, 0), (10, 20, 10), BLUE)
+pr.set_window_size(800, 500, "title")
+camera = pr.Camera3D([18.0, 16.0, 18.0], [0.0, 0.0, 0.0], [0.0, 1.0, 0.0], 45.0, 0)
+pr.set_camera_mode(camera, pr.CAMERA_FIRST_PERSON)
 
-while not pyray.window_should_close():
+while not pr.window_should_close():
 
-    pyray.update_camera(camera)
+    pr.update_camera(camera)
     cube.x = cube.x + 1
     if cube.x > 100:
         cube.x = -100
 
-    if pyray.is_key_pressed(pyray.KEY_ESCAPE):
+    if pr.is_key_pressed(pr.KEY_ESCAPE):
         exit()
 
-    pyray.begin_drawing()
-    pyray.begin_mode_3d(camera)
-    pyray.draw_grid(100, 10)
+    pr.begin_drawing()
+    pr.begin_mode_3d(camera)
+    pr.draw_grid(100, 10)
     clear()
     cube.draw()
-    pyray.end_mode_3d()
-    pyray.end_drawing()
+    pr.end_mode_3d()
+    pr.end_drawing()
 

@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ClojureProjectResolveSettings">
-    <currentScheme>IDE</currentScheme>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" project-jdk-name="Python 3.10 (rlzero)sdfsfd" project-jdk-type="Python SDK">
+    <output url="file://$PROJECT_DIR$/out" />
   </component>
-  <component name="JavaScriptSettings">
-    <option name="languageLevel" value="ES6" />
-  </component>
-  <component name="NodePackageJsonFileManager">
-    <packageJsonPaths />
-  </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_12" project-jdk-name="Python 3.10 (rlzero) (2)" project-jdk-type="Python SDK" />
 </project>
